@@ -1,0 +1,10 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }} | {{ SITE_NAME }} admin{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url main-index %}">{{ SITE_NAME }}</a> administration</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

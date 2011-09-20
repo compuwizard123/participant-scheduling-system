@@ -1,0 +1,8 @@
+{% extends "main/base.html" %}
+
+{% block title %}{% block description %}{{ title }}{% endblock %}{% endblock %}
+
+{% block content %}
+<h1>You've been {{ title|lower }}.</h1>
+<p>Thanks for stopping by; when you come back, don't forget to <a href="{% url auth_login %}">log in</a> again.</p>
+{% endblock %}

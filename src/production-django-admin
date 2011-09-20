@@ -1,0 +1,18 @@
+#!/bin/bash
+
+db="pss"
+
+sudo chmod +x remove-stale-bytecode
+sudo ./remove-stale-bytecode
+
+sudo chmod +x pss/manage.py
+
+if [ "$1" = "resetall" ]; then
+	sudo -u postgres dropdb "$db"
+	sudo -u postgres createdb "$db" 
+	sudo django-admin.py syncdb --pythonpath=. --settings=pss.settings --noinput
+	sudo django-admin.py loaddb --pythonpath=. --settings=pss.settings
+	sudo chown -R www-data:www-data /srv/django/pss/
+else
+	sudo django-admin.py "$@" --pythonpath=. --settings=pss.settings
+fi

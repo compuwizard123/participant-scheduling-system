@@ -1,0 +1,27 @@
+{% extends "main/base.html" %}
+
+{% load uni_form_tags %}
+
+{% block title %}{% block description %}Sign up{% endblock %}{% endblock %}
+
+{% block jquery %}
+{% if not user.is_authenticated %}
+    $("#registration_form").validate("{% url ajax_validation-validate_registration_form %}", {callback: uniform_callback});
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<h1>Sign up</h1>
+{% if not user.is_authenticated %}
+    <p>Fill out the form below (all fields are required), and your account will be created; you'll be sent an email with instructions on how to finish your registration.</p>
+    <form action="." method="post" id="registration_form" class="uniForm">
+        {% csrf_token %}
+        {{ form|as_uni_form }}
+        <div class="buttonHolder">
+            <input type="submit" value="Register" class="primaryAction" />
+        </div>
+    </form>
+{% else %}
+    <p>You are already logged in.</p>
+{% endif %}
+{% endblock %}

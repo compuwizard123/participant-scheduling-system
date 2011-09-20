@@ -1,0 +1,9 @@
+{% extends "main/base.html" %}
+
+{% load main_templatetags %}
+
+{% block title %}{% block description %}Home{% endblock %}{% endblock %}
+
+{% block content %}
+<p><a href="mailto:{{ "coming-soon"|mungify }}">Contact</a></p>
+{% endblock %}

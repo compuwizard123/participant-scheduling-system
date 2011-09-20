@@ -1,0 +1,26 @@
+{% extends "main/base.html" %}
+
+{% load uni_form_tags %}
+
+{% block title %}{% block description %}Log in{% endblock %}{% endblock %}
+
+{% block jquery %}
+$("#authentication_form").validate("{% url ajax_validation-validate_authentication_form %}", {callback: uniform_callback});
+{% endblock %}
+
+{% block content %}
+<h1>Log in</h1>
+{% if not user.is_authenticated %}
+    <form action="." method="post" id="authentication_form" class="uniForm">
+        {% csrf_token %}
+        {{ form|as_uni_form }}
+        <div class="buttonHolder">
+            <input type="submit" value="Log in" class="primaryAction" />
+        </div>
+    </form>
+    <p>If you don't have an account, you can <a href="{% url registration_register %}">sign up</a> for one; it's free, and you'll get access to a bunch of nifty features.</p>
+    <p><a href="{% url auth_password_reset %}">Forgotten your password?</a></p>
+{% else %}
+    <p>You are already logged in.</p>
+{% endif %}
+{% endblock %}

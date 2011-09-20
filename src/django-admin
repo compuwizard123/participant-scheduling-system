@@ -1,0 +1,17 @@
+#!/bin/bash
+
+db="pss"
+
+chmod +x remove-stale-bytecode
+./remove-stale-bytecode
+
+chmod +x pss/manage.py
+
+if [ "$1" = "resetall" ]; then
+	dropdb "$db"
+	createdb "$db"
+	django-admin.py syncdb --pythonpath=. --settings=pss.settings --noinput
+	django-admin.py loaddb --pythonpath=. --settings=pss.settings
+else
+	django-admin.py "$@" --pythonpath=. --settings=pss.settings
+fi

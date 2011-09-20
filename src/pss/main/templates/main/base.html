@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>{{ SITE_NAME }} | {% block title %}{% endblock %}</title>
+<meta name="description" content="{% block description %}{% endblock %}" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/reset.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery-ui-1.8.16.custom.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/uni-form.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/default.uni-form.css" />
+<!--<link rel="icon" type="image/x-icon" href="{{ STATIC_URL }}favicon.ico" />-->
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ajax-validation.js"></script>
+<!--<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-django-csrf.js"></script>-->
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-uni-form.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/uni-form.jquery.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function() {
+    $("#menu a").button();
+    $("form.uniForm").uniform();
+    $(":input:visible:enabled").each(function() {
+        if ($(this).val() == "" || $(this).parent().hasClass("error")) {
+           $(this).select();
+           return false;
+        }
+    });
+    {% block jquery %}{% endblock %}
+});
+//]]>
+</script>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <a href="{% url main-index %}"><img src="{{ STATIC_URL }}images/header.jpg" alt="{{ SITE_NAME }}" /></a>
+        </div>
+        <div id="menu">
+            <a href="{% url main-index %}">Home</a>
+            {% if user.is_authenticated %}
+                <a href="{% url auth_logout %}">Log out</a>
+            {% else %}
+                <a href="{% url auth_login %}">Log in</a>
+                <a href="{% url registration_register %}">Sign up</a>
+            {% endif %}
+        </div>
+        <div id="content">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div>
+        <div id="footer">
+            <p>&copy; <a href="http://www.{{ SITE_DOMAIN }}">{{ SITE_NAME }}</a> {{ YEAR }} | <a href="{% url admin:index %}">Administration</a></p>
+        </div>
+    </div>
+</body>
+</html>
