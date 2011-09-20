@@ -6,7 +6,7 @@ def run():
 
     site = Site()
     site.id = settings.SITE_ID
-    site.domain = 'www.' + settings.SITE_DOMAIN
+    site.domain = 'hci.cs.' + settings.SITE_DOMAIN
     site.name = settings.SITE_NAME
     site.save()
 
