@@ -12,7 +12,7 @@ if [ "$1" = "resetall" ]; then
 	sudo -u postgres createdb "$db" 
 	sudo django-admin.py syncdb --pythonpath=. --settings=pss.settings --noinput
 	sudo django-admin.py loaddb --pythonpath=. --settings=pss.settings
-	sudo chown -R www-data:www-data /srv/django/pss/
+	sudo chown -R www-data:www-data /srv/django/participant-scheduling-system/
 else
 	sudo django-admin.py "$@" --pythonpath=. --settings=pss.settings
 fi
