@@ -1,3 +1,6 @@
+from django import get_version
+NOT_SVN_VERSION = get_version().startswith('1.3')
+
 # Django settings for pss project.
 
 DEBUG = True
@@ -136,8 +139,7 @@ INSTALLED_APPS = (
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
-from django import get_version
-if get_version().startswith('1.3'):
+if NOT_SVN_VERSION:
     LOGGING = {
         'version': 1,
         'disable_existing_loggers': False,
