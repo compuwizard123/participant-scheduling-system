@@ -40,7 +40,7 @@ LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 SITE_NAME = 'Participant Scheduling System'
-SITE_DOMAIN = 'wisc.edu'
+SITE_DOMAIN = 'cs.wisc.edu'
 
 DEFAULT_FROM_EMAIL = '%s <do-not-reply@%s>' % (SITE_NAME, SITE_DOMAIN)
 
