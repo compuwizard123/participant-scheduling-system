@@ -51,3 +51,5 @@ def run():
     user.is_superuser = True
     user.set_password('temp123')
     user.save()
+
+    # to-do: Make some good test data.
