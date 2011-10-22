@@ -43,3 +43,11 @@ def run():
     user.is_superuser = True
     user.set_password('temp123')
     user.save()
+
+    user = User.objects.create_user('aterrell', 'aterrell@cs.wisc.edu')
+    user.first_name = 'Allie'
+    user.last_name = 'Terrell'
+    user.is_staff = True
+    user.is_superuser = True
+    user.set_password('temp123')
+    user.save()

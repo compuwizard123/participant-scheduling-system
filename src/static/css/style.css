@@ -1,1 +1,16 @@
-
+ul.messages {
+    list-style : none;
+    margin : 0;
+}
+ul.messages li {
+    margin : 10px 0;
+    padding : .5em;
+}
+ul.messages li.error {
+    background : #ffdfdf;
+    border : 2px solid #f3afb5;
+}
+ul.messages li.success {
+    background : #c8ffbf;
+    border : 2px solid #a2ef95;
+}
