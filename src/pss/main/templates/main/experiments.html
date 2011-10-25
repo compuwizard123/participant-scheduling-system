@@ -1,0 +1,36 @@
+{% extends "main/base.html" %}
+
+{% block title %}{% block description %}Experiments{% endblock %}{% endblock %}
+
+{% block content %}
+<h1>Experiments</h1>
+{% if experiments %}
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Researchers</th>
+                <th>Room</th>
+                <th>Qualifications</th>
+                <th>Length</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for experiment in experiments %}
+                <tr>
+                    <td><a href="{% url main-edit_experiment experiment.id %}">{{ experiment.name }}</a></td>
+                    <td>{{ experiment.description }}</td>
+                    <td>{{ experiment.researchers.all|join:", " }}</td>
+                    <td>{{ experiment.room }}</td>
+                    <td>{{ experiment.qualifications.all|join:", " }}</td>
+                    <td>{{ experiment.length }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>There are no experiments, yet.</p>
+{% endif %}
+<p><a href="{% url main-create_experiment %}">Create a new experiment</a></p>
+{% endblock %}

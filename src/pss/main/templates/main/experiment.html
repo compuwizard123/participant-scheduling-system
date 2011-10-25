@@ -1,0 +1,38 @@
+{% extends "main/base.html" %}
+
+{% load uni_form_tags %}
+
+{% block title %}{% block description %}{{ action }} Experiment{% endblock %}{% endblock %}
+
+{% block jquery %}
+{# to-do: AJAX validation #}
+{# $("#experiment_form").validate("{% url ajax_validation-validate_experiment_form %}", {callback: uniform_callback}); #}
+$("#dialog").dialog({
+    autoOpen: false,
+    modal: true,
+    buttons: {"Yes": function() { $("#delete").attr("name", "delete"); $("form").submit(); },
+              "No": function() { $(this).dialog("close"); }}
+});
+$("#open").click(function() {
+    $("#dialog").dialog("open");
+    return false;
+});
+{% endblock %}
+
+{% block content %}
+<h1>{{ action }} Experiment</h1>
+<form action="." method="post" {# id="experiment_form" #} class="uniForm">
+    {% csrf_token %}
+    {{ form|as_uni_form }}
+    <div class="buttonHolder">
+        <input type="submit" value="Save" class="primaryAction" />
+        {% ifequal action "Edit" %}
+            <input type="hidden" id="delete" />
+            <input type="button" value="Delete" class="secondaryAction" id="open" />
+            <div id="dialog">
+                <p>Are you sure that you want to delete this experiment?</p>
+            </div>
+        {% endifequal %}
+    </div>
+</form>
+{% endblock %}
