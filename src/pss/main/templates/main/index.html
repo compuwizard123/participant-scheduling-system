@@ -5,6 +5,6 @@
 {% block title %}{% block description %}Home{% endblock %}{% endblock %}
 
 {% block content %}
-<p>Welcome{% if user.is_authenticated %}, {{ user.get_full_name|default:user.username }}{% endif %}</p>
+<h1>Welcome{% if user.is_authenticated %}, {{ user.get_full_name|default:user.username }}{% endif %}</h1>
 <p><a href="mailto:{{ "allie"|mungify }}">Contact</a></p>
 {% endblock %}

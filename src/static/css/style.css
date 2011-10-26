@@ -1,6 +1,27 @@
-ul.messages {
-    list-style : none;
-    margin : 0;
+a {
+    color : #212426;
+    text-decoration : none;
+}
+body {
+    background : #b0b0b0;
+    color : #212426;
+    font-family : "Lucida Grande", "Lucida Sans", "Lucida Sans Unicode", sans-serif;
+    font-size : 12px;
+    text-align : center;
+}
+table.pretty {
+    margin : 10px 0;
+    width : 100%;
+}
+table.pretty td, table.pretty th {
+    border : 1px solid #212426;
+    padding : .5em;
+    text-align : center;
+    vertical-align : middle;
+}
+table.pretty th {
+    background : #eeeeee;
+    font-weight : bold;
 }
 ul.messages li {
     margin : 10px 0;
@@ -13,4 +34,40 @@ ul.messages li.error {
 ul.messages li.success {
     background : #c8ffbf;
     border : 2px solid #a2ef95;
+}
+.pretty-links a {
+    border-bottom : 1px solid #999999;
+}
+.pretty-links a:hover {
+    background : #eeeeee;
+    border-bottom : none;
+}
+#container {
+    background : #ffffff;
+    margin : 0 auto;
+    width : 1000px;
+}
+#content {
+    margin : 0 auto;
+    padding : 0 20px;
+    text-align : left;
+}
+#content h1 {
+    font-size : 26px;
+    line-height : 150%;
+    padding : 10px 0;
+}
+#content p {
+    line-height : 150%;
+    padding : 10px 0;
+}
+#footer {
+    font-size : 10px;
+    padding : 20px 0;
+}
+#header {
+    padding : 20px 0;
+}
+#menu {
+    padding : 10px 0;
 }
