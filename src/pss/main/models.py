@@ -78,6 +78,30 @@ class Experiment(models.Model):
     def __unicode__(self):
         return self.name
 
+class ExperimentDate(models.Model):
+    experiment = models.ForeignKey(Experiment)
+    date = models.DateField()
+
+    class Meta:
+        ordering = ('experiment', 'date',)
+        unique_together = (('experiment', 'date',),)
+
+    def __unicode__(self):
+        return '%s on %s' % (self.experiment, self.date)
+
+class ExperimentDateTimeRange(models.Model):
+    experiment_date = models.ForeignKey(ExperimentDate)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    # to-do: start_time + experiment.length <= end_time
+    # to-do: Make sure no two ExperimentDateTimeRanges for one ExperimentDate overlap.
+
+    class Meta:
+        ordering = ('experiment_date',)
+
+    def __unicode__(self):
+        return '%s from %s to %s' % (self.experiment_date, self.start_time, self.end_time)
+
 class Slot(models.Model):
     experiment = models.ForeignKey(Experiment)
     date = models.DateField()
@@ -96,6 +120,17 @@ class Slot(models.Model):
         # to-do: What if start_datetime.date() != end_datetime.date()?
         self.end_time = end_datetime.time()
         super(Slot, self).save(*args, **kwargs)
+
+    @staticmethod
+    def create(slots, experiment):
+        length = timedelta(minutes=experiment.length)
+        for date, start_time, end_time in slots:
+            start_datetime = datetime.combine(date, start_time)
+            end_datetime = datetime.combine(date, end_time)
+            while start_datetime + length < end_datetime:
+                Slot.objects.create(experiment=experiment, date=date,
+                                    start_time=start_datetime.time())
+                start_datetime += length
 
 class Appointment(models.Model):
     participant = models.ForeignKey(Participant)

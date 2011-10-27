@@ -21,6 +21,7 @@
 $(document).ready(function() {
     $("#menu a").button();
     $("form.uniForm").uniform();
+    $("input.dateinput").datepicker({dateFormat: "yy-mm-dd"});
     $(":input:visible:enabled").each(function() {
         if ($(this).val() == "" || $(this).parent().hasClass("error")) {
            $(this).select();

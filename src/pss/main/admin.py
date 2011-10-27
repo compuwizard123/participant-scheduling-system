@@ -1,9 +1,13 @@
 from django.contrib import admin
 
-from pss.main.models import Appointment, Building, Experiment, Participant, Qualification, Researcher, Room, Slot
+from pss.main.models import Appointment, Building, Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Qualification, Researcher, Room, Slot
 
 class AppointmentInline(admin.TabularInline):
     model = Appointment
+    extra = 0
+
+class ExperimentDateTimeRangeInline(admin.TabularInline):
+    model = ExperimentDateTimeRange
     extra = 0
 
 class RoomInline(admin.TabularInline):
@@ -30,6 +34,11 @@ class ExperimentAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', researchers, 'room', qualifications, 'length')
     search_fields = ('name', 'description',)
 
+class ExperimentDateAdmin(admin.ModelAdmin):
+    inlines = (ExperimentDateTimeRangeInline,)
+    list_display = ('experiment', 'date',)
+    search_fields = ('experiment__name', 'experiment__description',)
+
 def name(obj):
     return unicode(obj)
 name.short_description = 'Name'
@@ -53,6 +62,7 @@ class QualificationAdmin(admin.ModelAdmin):
 
 admin.site.register(Building, BuildingAdmin)
 admin.site.register(Experiment, ExperimentAdmin)
+admin.site.register(ExperimentDate, ExperimentDateAdmin)
 admin.site.register(Participant, ParticipantAdmin)
 admin.site.register(Qualification, QualificationAdmin)
 admin.site.register(Researcher, ResearcherAdmin)

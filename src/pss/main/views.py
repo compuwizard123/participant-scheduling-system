@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
-from pss.main.forms import ExperimentForm
+from pss.main.forms import ExperimentForm, ExperimentDateForm, ExperimentDateTimeRangeForm
 from pss.main.models import Experiment, Researcher
 
 def index(request):
@@ -43,7 +43,7 @@ def experiment_view(request, id=None):
             messages.add_message(request, messages.SUCCESS, 'The experiment was successfully deleted.')
             return HttpResponseRedirect(reverse('main-list_experiments'))
         form = ExperimentForm(request.POST, instance=instance)
-        if form.is_valid():
+        if form.is_valid() and formset.is_valid():
             experiment = form.save()
             experiment.researchers.add(researcher)
             experiment.save()
