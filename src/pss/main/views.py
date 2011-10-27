@@ -43,7 +43,7 @@ def experiment_view(request, id=None):
             messages.add_message(request, messages.SUCCESS, 'The experiment was successfully deleted.')
             return HttpResponseRedirect(reverse('main-list_experiments'))
         form = ExperimentForm(request.POST, instance=instance)
-        if form.is_valid() and formset.is_valid():
+        if form.is_valid():
             experiment = form.save()
             experiment.researchers.add(researcher)
             experiment.save()
