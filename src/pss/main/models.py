@@ -95,6 +95,7 @@ class ExperimentDateTimeRange(models.Model):
     end_time = models.TimeField()
     # to-do: start_time + experiment.length <= end_time
     # to-do: Make sure no two ExperimentDateTimeRanges for one ExperimentDate overlap.
+    # to-do: Make sure there are no room conflicts.
 
     class Meta:
         ordering = ('experiment_date',)
@@ -102,35 +103,32 @@ class ExperimentDateTimeRange(models.Model):
     def __unicode__(self):
         return '%s from %s to %s' % (self.experiment_date, self.start_time, self.end_time)
 
+    def create_slots(self):
+        length = timedelta(minutes=self.experiment_date.experiment.length)
+        date = self.experiment_date.date
+        start_datetime = datetime.combine(date, self.start_time)
+        end_datetime = datetime.combine(date, self.end_time)
+        while start_datetime + length <= end_datetime:
+            Slot.objects.create(experiment_date_time_range=self, start_time=start_datetime.time())
+            start_datetime += length
+
 class Slot(models.Model):
-    experiment = models.ForeignKey(Experiment)
-    date = models.DateField()
+    experiment_date_time_range = models.ForeignKey(ExperimentDateTimeRange)
     start_time = models.TimeField()
     end_time = models.TimeField(editable=False) # start_time + experiment.length
 
     class Meta:
-        ordering = ('experiment', 'date', 'start_time',)
+        ordering = ('experiment_date_time_range', 'start_time',)
 
     def __unicode__(self):
-        return '%s on %s from %s to %s' % (self.experiment, self.date, self.start_time, self.end_time)
+        return '%s from %s to %s' % (self.experiment_date_time_range.experiment_date, self.start_time, self.end_time)
 
     def save(self, *args, **kwargs):
-        start_datetime = datetime.combine(self.date, self.start_time)
-        end_datetime = start_datetime + timedelta(minutes=self.experiment.length)
+        start_datetime = datetime.combine(self.experiment_date_time_range.experiment_date.date, self.start_time)
+        end_datetime = start_datetime + timedelta(minutes=self.experiment_date_time_range.experiment_date.experiment.length)
         # to-do: What if start_datetime.date() != end_datetime.date()?
         self.end_time = end_datetime.time()
         super(Slot, self).save(*args, **kwargs)
-
-    @staticmethod
-    def create(slots, experiment):
-        length = timedelta(minutes=experiment.length)
-        for date, start_time, end_time in slots:
-            start_datetime = datetime.combine(date, start_time)
-            end_datetime = datetime.combine(date, end_time)
-            while start_datetime + length < end_datetime:
-                Slot.objects.create(experiment=experiment, date=date,
-                                    start_time=start_datetime.time())
-                start_datetime += length
 
 class Appointment(models.Model):
     participant = models.ForeignKey(Participant)
