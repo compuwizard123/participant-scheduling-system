@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, Pa
 from registration.forms import RegistrationForm
 
 from pss.main import views
-#from pss.main.forms import ExperimentForm
+#from pss.main.forms import ExperimentForm, ExperimentDateForm, ExperimentDateTimeRangeForm
 
 def callback(request, *args, **kwargs):
     return {'user': request.user}
@@ -13,6 +13,12 @@ urlpatterns = patterns('',
     url(r'^experiments/$', views.experiments_view, name='main-list_experiments'),
     url(r'^experiments/create/$', views.experiment_view, name='main-create_experiment'),
     url(r'^experiments/edit/(?P<id>[\d]+)/$', views.experiment_view, name='main-edit_experiment'),
+    url(r'^experiments/dates/(?P<experiment_id>[\d]+)/$', views.experiment_dates_view, name='main-list_experiment_dates'),
+    url(r'^experiments/dates/create/(?P<experiment_id>[\d]+)/$', views.experiment_date_view, name='main-create_experiment_date'),
+    url(r'^experiments/dates/edit/(?P<experiment_date_id>[\d]+)/$', views.experiment_date_view, name='main-edit_experiment_date'),
+    url(r'^experiments/dates/time-ranges/(?P<experiment_date_id>[\d]+)/$', views.experiment_date_time_ranges_view, name='main-list_experiment_date_time_ranges'),
+    url(r'^experiments/dates/time-ranges/create/(?P<experiment_date_id>[\d]+)/$', views.experiment_date_time_range_view, name='main-create_experiment_date_time_range'),
+    url(r'^experiments/dates/time-ranges/edit/(?P<experiment_date_time_range_id>[\d]+)/$', views.experiment_date_time_range_view, name='main-edit_experiment_date_time_range'),
     url(r'^ajax_validation/validate/authentication_form/$',
         'ajax_validation.views.validate',
         {'form_class': AuthenticationForm},
@@ -37,4 +43,12 @@ urlpatterns = patterns('',
 #        'ajax_validation.views.validate',
 #        {'form_class': ExperimentForm},
 #        name='ajax_validation-validate_experiment_form'),
+#    url(r'^ajax_validation/validate/experiment_date_form/$',
+#        'ajax_validation.views.validate',
+#        {'form_class': ExperimentDateForm},
+#        name='ajax_validation-validate_experiment_date_form'),
+#    url(r'^ajax_validation/validate/experiment_date_time_range_form/$',
+#        'ajax_validation.views.validate',
+#        {'form_class': ExperimentDateTimeRangeForm},
+#        name='ajax_validation-validate_experiment_date_time_range_form'),
 )

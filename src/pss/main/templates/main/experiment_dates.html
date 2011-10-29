@@ -1,0 +1,56 @@
+{% extends "main/base.html" %}
+
+{% block title %}{% block description %}Experiment Dates for {{ experiment }}{% endblock %}{% endblock %}
+
+{% block jquery %}
+$("a.edit").button({
+    icons: {
+        primary: "ui-icon-pencil"
+    }
+});
+$("a.experiment_date_time_ranges").button({
+    icons: {
+        primary: "ui-icon-clock"
+    }
+});
+$("a.create").button({
+    icons: {
+        primary: "ui-icon-plus"
+    }
+});
+$("a.cancel").button({
+    icons: {
+        primary: "ui-icon-cancel"
+    }
+});
+{% endblock %}
+
+{% block content %}
+<h1>Experiment Dates for {{ experiment }}</h1>
+{% with experiment.experimentdate_set.all as experiment_dates %}
+    {% if experiment_dates %}
+        <table class="pretty">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Edit</th>
+                    <th>Experiment Date Time Ranges</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for experiment_date in experiment_dates %}
+                    <tr>
+                        <td>{{ experiment_date.date }}</td>
+                        <td><a href="{% url main-edit_experiment_date experiment_date.id %}" class="edit">Edit</a></td>
+                        <td><a href="{% url main-list_experiment_date_time_ranges experiment_date.id %}" class="experiment_date_time_ranges">Experiment Date Time Ranges</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>There are no experiment dates for {{ experiment }}, yet.</p>
+    {% endif %}
+{% endwith %}
+<p><a href="{% url main-create_experiment_date experiment.id %}" class="create">Create a new experiment date for {{ experiment }}</a></p>
+<p><a href="{% url main-list_experiments %}" class="cancel">Cancel</a></p>
+{% endblock %}

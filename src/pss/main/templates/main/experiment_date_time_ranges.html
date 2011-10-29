@@ -1,0 +1,51 @@
+{% extends "main/base.html" %}
+
+{% block title %}{% block description %}Experiment Date Time Ranges for {{ experiment_date }}{% endblock %}{% endblock %}
+
+{% block jquery %}
+$("a.edit").button({
+    icons: {
+        primary: "ui-icon-pencil"
+    }
+});
+$("a.create").button({
+    icons: {
+        primary: "ui-icon-plus"
+    }
+});
+$("a.cancel").button({
+    icons: {
+        primary: "ui-icon-cancel"
+    }
+});
+{% endblock %}
+
+{% block content %}
+<h1>Experiment Date Time Ranges for {{ experiment_date }}</h1>
+{% with experiment_date.experimentdatetimerange_set.all as experiment_date_time_ranges %}
+    {% if experiment_date_time_ranges %}
+        <table class="pretty">
+            <thead>
+                <tr>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for experiment_date_time_range in experiment_date_time_ranges %}
+                    <tr>
+                        <td>{{ experiment_date_time_range.start_time }}</td>
+                        <td>{{ experiment_date_time_range.end_time }}</td>
+                        <td><a href="{% url main-edit_experiment_date_time_range experiment_date_time_range.id %}" class="edit">Edit</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>There are no experiment date time ranges for {{ experiment_date }}, yet.</p>
+    {% endif %}
+{% endwith %}
+<p><a href="{% url main-create_experiment_date_time_range experiment_date.id %}" class="create">Create a new experiment date time range for {{ experiment_date }}</a></p>
+<p><a href="{% url main-list_experiment_dates experiment_date.experiment.id %}" class="cancel">Cancel</a></p>
+{% endblock %}

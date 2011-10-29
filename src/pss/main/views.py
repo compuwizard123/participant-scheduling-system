@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
 from pss.main.forms import ExperimentForm, ExperimentDateForm, ExperimentDateTimeRangeForm
-from pss.main.models import Experiment, Researcher
+from pss.main.models import Experiment, ExperimentDate, ExperimentDateTimeRange, Researcher
 
 def index(request):
     return render_to_response('main/index.html',
@@ -53,5 +53,103 @@ def experiment_view(request, id=None):
         form = ExperimentForm(instance=instance)
     return render_to_response('main/experiment.html',
                               {'action': action,
+                               'form': form},
+                              RequestContext(request))
+
+@login_required
+def experiment_dates_view(request, experiment_id):
+    try:
+        researcher = request.user.researcher
+    except Researcher.DoesNotExist:
+        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        return HttpResponseRedirect(reverse('main-index'))
+    experiment = get_object_or_404(Experiment, id=experiment_id, researchers=researcher)
+    return render_to_response('main/experiment_dates.html',
+                              {'experiment': experiment},
+                              RequestContext(request))
+
+@login_required
+def experiment_date_view(request, experiment_id=None, experiment_date_id=None):
+    try:
+        researcher = request.user.researcher
+    except Researcher.DoesNotExist:
+        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        return HttpResponseRedirect(reverse('main-index'))
+    if experiment_id is not None:
+        instance = None
+        action = 'Create'
+        experiment = get_object_or_404(Experiment, id=experiment_id, researchers=researcher)
+    else:
+        instance = get_object_or_404(ExperimentDate, id=experiment_date_id, experiment__researchers=researcher)
+        action = 'Edit'
+        experiment = instance.experiment
+    if request.method == 'POST':
+        if instance is not None and 'delete' in request.POST:
+            instance.delete()
+            messages.add_message(request, messages.SUCCESS, 'The experiment date for %s was successfully deleted.' % experiment)
+            return HttpResponseRedirect(reverse('main-list_experiment_dates', args=[experiment.id]))
+        form = ExperimentDateForm(request.POST, instance=instance)
+        if form.is_valid():
+            experiment_date = form.save(commit=False)
+            experiment_date.experiment = experiment
+            experiment_date.save()
+            messages.add_message(request, messages.SUCCESS, 'The experiment date for %s was successfully saved.' % experiment)
+            return HttpResponseRedirect(reverse('main-list_experiment_dates', args=[experiment.id]))
+    else:
+        form = ExperimentDateForm(instance=instance)
+    return render_to_response('main/experiment_date.html',
+                              {'action': action,
+                               'experiment': experiment,
+                               'form': form},
+                              RequestContext(request))
+
+@login_required
+def experiment_date_time_ranges_view(request, experiment_date_id):
+    try:
+        researcher = request.user.researcher
+    except Researcher.DoesNotExist:
+        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        return HttpResponseRedirect(reverse('main-index'))
+    experiment_date = get_object_or_404(ExperimentDate, id=experiment_date_id, experiment__researchers=researcher)
+    return render_to_response('main/experiment_date_time_ranges.html',
+                              {'experiment_date': experiment_date},
+                              RequestContext(request))
+
+@login_required
+def experiment_date_time_range_view(request, experiment_date_id=None, experiment_date_time_range_id=None):
+    try:
+        researcher = request.user.researcher
+    except Researcher.DoesNotExist:
+        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        return HttpResponseRedirect(reverse('main-index'))
+    if experiment_date_id is not None:
+        instance = None
+        action = 'Create'
+        experiment_date = get_object_or_404(ExperimentDate, id=experiment_date_id, experiment__researchers=researcher)
+    else:
+        instance = get_object_or_404(ExperimentDateTimeRange, id=experiment_date_time_range_id, experiment_date__experiment__researchers=researcher)
+        action = 'Edit'
+        experiment_date = instance.experiment_date
+    if request.method == 'POST':
+        if instance is not None and 'delete' in request.POST:
+            instance.delete()
+            messages.add_message(request, messages.SUCCESS, 'The experiment date time range for %s was successfully deleted.' % experiment_date)
+            return HttpResponseRedirect(reverse('main-list_experiment_date_time_ranges', args=[experiment_date.id]))
+        form = ExperimentDateTimeRangeForm(request.POST, instance=instance)
+        if form.is_valid():
+            experiment_date_time_range = form.save(commit=False)
+            experiment_date_time_range.experiment_date = experiment_date
+            experiment_date_time_range.save()
+            if instance is None:
+                experiment_date_time_range.create_slots()
+            else:
+                pass # to-do
+            messages.add_message(request, messages.SUCCESS, 'The experiment date time range for %s was successfully saved.' % experiment_date)
+            return HttpResponseRedirect(reverse('main-list_experiment_date_time_ranges', args=[experiment_date.id]))
+    else:
+        form = ExperimentDateTimeRangeForm(instance=instance)
+    return render_to_response('main/experiment_date_time_range.html',
+                              {'action': action,
+                               'experiment_date': experiment_date,
                                'form': form},
                               RequestContext(request))

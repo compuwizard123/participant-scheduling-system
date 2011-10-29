@@ -29,6 +29,14 @@ $(document).ready(function() {
         }
     });
     {% block jquery %}{% endblock %}
+    $(".pretty-links a").not(".ui-state-default").css("border-bottom", "1px solid #999999").hover(
+        function () {
+            $(this).css("border-bottom", "none").css("background", "#eeeeee");
+        },
+        function () {
+            $(this).css("border-bottom", "1px solid #999999").css("background", "none");
+        }
+    );
 });
 //]]>
 </script>

@@ -35,13 +35,6 @@ ul.messages li.success {
     background : #c8ffbf;
     border : 2px solid #a2ef95;
 }
-.pretty-links a {
-    border-bottom : 1px solid #999999;
-}
-.pretty-links a:hover {
-    background : #eeeeee;
-    border-bottom : none;
-}
 #container {
     background : #ffffff;
     margin : 0 auto;
