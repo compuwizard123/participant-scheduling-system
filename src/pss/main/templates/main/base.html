@@ -7,11 +7,13 @@
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/reset.css" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style.css" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery-ui-1.8.16.custom.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.ui.timepicker.css " />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/uni-form.css" />
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/default.uni-form.css" />
 <!--<link rel="icon" type="image/x-icon" href="{{ STATIC_URL }}favicon.ico" />-->
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.ui.timepicker.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ajax-validation.js"></script>
 <!--<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-django-csrf.js"></script>-->
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-uni-form.js"></script>
@@ -22,6 +24,7 @@ $(document).ready(function() {
     $("#menu a").button();
     $("form.uniForm").uniform();
     $("input.dateinput").datepicker({dateFormat: "yy-mm-dd"});
+    $("input.timeinput").timepicker({zIndex: 1});
     $(":input:visible:enabled").each(function() {
         if ($(this).val() == "" || $(this).parent().hasClass("error")) {
            $(this).select();

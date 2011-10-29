@@ -14,8 +14,6 @@ class ExperimentDateForm(forms.ModelForm):
         exclude = ('experiment',)
 
 class ExperimentDateTimeRangeForm(forms.ModelForm):
-    # to-do: Better time inputs (jQuery UI maybe?)
-
     class Meta:
         model = ExperimentDateTimeRange
         exclude = ('experiment_date',)
