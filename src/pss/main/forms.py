@@ -2,6 +2,8 @@ from django import forms
 
 from pss.main.models import Experiment, ExperimentDate, ExperimentDateTimeRange
 
+# to-do: Enforce unique_together.
+
 class ExperimentForm(forms.ModelForm):
     # to-do: Be able to create qualifications and rooms.
 

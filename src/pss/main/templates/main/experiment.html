@@ -5,8 +5,7 @@
 {% block title %}{% block description %}{{ action }} Experiment{% endblock %}{% endblock %}
 
 {% block jquery %}
-{# to-do: AJAX validation #}
-{# $("#experiment_form").validate("{% url ajax_validation-validate_experiment_form %}", {callback: uniform_callback}); #}
+$("#experiment_form").validate("{% if instance %}{% url ajax_validation-validate_experiment_form_alt instance.id %}{% else %}{% url ajax_validation-validate_experiment_form %}{% endif %}", {callback: uniform_callback});
 $("#dialog").dialog({
     autoOpen: false,
     modal: true,
@@ -26,7 +25,7 @@ $("a.cancel").button({
 
 {% block content %}
 <h1>{{ action }} Experiment</h1>
-<form action="." method="post" {# id="experiment_form" #} class="uniForm">
+<form action="." method="post" id="experiment_form" class="uniForm">
     {% csrf_token %}
     {{ form|as_uni_form }}
     <div class="buttonHolder">

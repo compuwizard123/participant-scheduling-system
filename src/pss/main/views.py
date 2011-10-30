@@ -52,7 +52,8 @@ def experiment_view(request, id=None):
     else:
         form = ExperimentForm(instance=instance)
     return render_to_response('main/experiment.html',
-                              {'action': action,
+                              {'instance': instance,
+                               'action': action,
                                'form': form},
                               RequestContext(request))
 
@@ -98,7 +99,8 @@ def experiment_date_view(request, experiment_id=None, experiment_date_id=None):
     else:
         form = ExperimentDateForm(instance=instance)
     return render_to_response('main/experiment_date.html',
-                              {'action': action,
+                              {'instance': instance,
+                               'action': action,
                                'experiment': experiment,
                                'form': form},
                               RequestContext(request))
@@ -149,7 +151,8 @@ def experiment_date_time_range_view(request, experiment_date_id=None, experiment
     else:
         form = ExperimentDateTimeRangeForm(instance=instance)
     return render_to_response('main/experiment_date_time_range.html',
-                              {'action': action,
+                              {'instance': instance,
+                               'action': action,
                                'experiment_date': experiment_date,
                                'form': form},
                               RequestContext(request))
