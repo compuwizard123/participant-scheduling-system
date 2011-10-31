@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
+from django.shortcuts import get_object_or_404
 from registration.forms import RegistrationForm
 
 from pss.main import views
@@ -9,26 +10,17 @@ from pss.main.models import Experiment, ExperimentDate, ExperimentDateTimeRange
 def callback(request, *args, **kwargs):
     return {'user': request.user}
 
-def validate_experiment_form_callback(request, *args, **kwargs):
-    try:
-        experiment = Experiment.objects.get(id=kwargs['id'], researchers__user=request.user)
-    except Experiment.DoesNotExist:
-        return {}
-    return {'instance': experiment}
+def validate_experiment_form_alt_callback(request, *args, **kwargs):
+    return {'instance': get_object_or_404(Experiment, id=kwargs['id'], researchers__user=request.user)}
 
 def validate_experiment_date_form_callback(request, *args, **kwargs):
-    try:
-        experiment_date = ExperimentDate.objects.get(id=kwargs['id'], experiment__researchers__user=request.user)
-    except ExperimentDate.DoesNotExist:
-        return {}
-    return {'instance': experiment_date}
+    return {'experiment': get_object_or_404(Experiment, id=kwargs['id'], researchers__user=request.user)}
 
-def validate_experiment_date_time_range_form_callback(request, *args, **kwargs):
-    try:
-        experiment_date_time_range = ExperimentDateTimeRange.objects.get(id=kwargs['id'], experiment_date__experiment__researchers__user=request.user)
-    except ExperimentDateTimeRange.DoesNotExist:
-        return {}
-    return {'instance': experiment_date_time_range}
+def validate_experiment_date_form_alt_callback(request, *args, **kwargs):
+    return {'instance': get_object_or_404(ExperimentDate, id=kwargs['id'], experiment__researchers__user=request.user)}
+
+def validate_experiment_date_time_range_form_alt_callback(request, *args, **kwargs):
+    return {'instance': get_object_or_404(ExperimentDateTimeRange, id=kwargs['id'], experiment_date__experiment__researchers__user=request.user)}
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='main-index'),
@@ -65,24 +57,28 @@ urlpatterns = patterns('',
         'ajax_validation.views.validate',
         {'form_class': ExperimentForm},
         name='ajax_validation-validate_experiment_form'),
-    url(r'^ajax_validation/validate/experiment_form/(?P<id>[\d]+)/$',
+    url(r'^ajax_validation/validate/experiment_form_alt/(?P<id>[\d]+)/$',
         'ajax_validation.views.validate',
-        {'form_class': ExperimentForm, 'callback': validate_experiment_form_callback},
+        {'form_class': ExperimentForm,
+         'callback': validate_experiment_form_alt_callback},
         name='ajax_validation-validate_experiment_form_alt'),
-    url(r'^ajax_validation/validate/experiment_date_form/$',
-        'ajax_validation.views.validate',
-        {'form_class': ExperimentDateForm},
-        name='ajax_validation-validate_experiment_date_form'),
     url(r'^ajax_validation/validate/experiment_date_form/(?P<id>[\d]+)/$',
         'ajax_validation.views.validate',
-        {'form_class': ExperimentDateForm, 'callback': validate_experiment_date_form_callback},
+        {'form_class': ExperimentDateForm,
+         'callback': validate_experiment_date_form_callback},
+        name='ajax_validation-validate_experiment_date_form'),
+    url(r'^ajax_validation/validate/experiment_date_form_alt/(?P<id>[\d]+)/$',
+        'ajax_validation.views.validate',
+        {'form_class': ExperimentDateForm,
+         'callback': validate_experiment_date_form_alt_callback},
         name='ajax_validation-validate_experiment_date_form_alt'),
     url(r'^ajax_validation/validate/experiment_date_time_range_form/$',
         'ajax_validation.views.validate',
         {'form_class': ExperimentDateTimeRangeForm},
         name='ajax_validation-validate_experiment_date_time_range_form'),
-    url(r'^ajax_validation/validate/experiment_date_time_range_form/(?P<id>[\d]+)/$',
+    url(r'^ajax_validation/validate/experiment_date_time_range_form_alt/(?P<id>[\d]+)/$',
         'ajax_validation.views.validate',
-        {'form_class': ExperimentDateTimeRangeForm, 'callback': validate_experiment_date_time_range_form_callback},
+        {'form_class': ExperimentDateTimeRangeForm,
+         'callback': validate_experiment_date_time_range_form_alt_callback},
         name='ajax_validation-validate_experiment_date_time_range_form_alt'),
 )

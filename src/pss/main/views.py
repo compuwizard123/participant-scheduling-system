@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
 from pss.main.forms import ExperimentForm, ExperimentDateForm, ExperimentDateTimeRangeForm
-from pss.main.models import Experiment, ExperimentDate, ExperimentDateTimeRange, Researcher
+from pss.main.models import Experiment, ExperimentDate, ExperimentDateTimeRange, Researcher, Slot
 
 def index(request):
     return render_to_response('main/index.html',
@@ -44,9 +44,15 @@ def experiment_view(request, id=None):
             return HttpResponseRedirect(reverse('main-list_experiments'))
         form = ExperimentForm(request.POST, instance=instance)
         if form.is_valid():
+            db_instance = instance is not None and Experiment.objects.get(id=instance.id) or None
             experiment = form.save()
             experiment.researchers.add(researcher)
             experiment.save()
+            if db_instance is not None and db_instance.length != experiment.length:
+                Slot.objects.filter(experiment_date_time_range__experiment_date__experiment=experiment).delete()
+                # to-do: Include warning.
+                for experiment_date_time_range in ExperimentDateTimeRange.objects.filter(experiment_date__experiment=experiment):
+                    experiment_date_time_range.create_slots()
             messages.add_message(request, messages.SUCCESS, 'The experiment was successfully saved.')
             return HttpResponseRedirect(reverse('main-list_experiments'))
     else:
@@ -89,7 +95,7 @@ def experiment_date_view(request, experiment_id=None, experiment_date_id=None):
             instance.delete()
             messages.add_message(request, messages.SUCCESS, 'The experiment date for %s was successfully deleted.' % experiment)
             return HttpResponseRedirect(reverse('main-list_experiment_dates', args=[experiment.id]))
-        form = ExperimentDateForm(request.POST, instance=instance)
+        form = ExperimentDateForm(experiment, request.POST, instance=instance)
         if form.is_valid():
             experiment_date = form.save(commit=False)
             experiment_date.experiment = experiment
@@ -97,7 +103,7 @@ def experiment_date_view(request, experiment_id=None, experiment_date_id=None):
             messages.add_message(request, messages.SUCCESS, 'The experiment date for %s was successfully saved.' % experiment)
             return HttpResponseRedirect(reverse('main-list_experiment_dates', args=[experiment.id]))
     else:
-        form = ExperimentDateForm(instance=instance)
+        form = ExperimentDateForm(experiment, instance=instance)
     return render_to_response('main/experiment_date.html',
                               {'instance': instance,
                                'action': action,
@@ -139,13 +145,17 @@ def experiment_date_time_range_view(request, experiment_date_id=None, experiment
             return HttpResponseRedirect(reverse('main-list_experiment_date_time_ranges', args=[experiment_date.id]))
         form = ExperimentDateTimeRangeForm(request.POST, instance=instance)
         if form.is_valid():
+            db_instance = instance is not None and ExperimentDateTimeRange.objects.get(id=instance.id) or None
             experiment_date_time_range = form.save(commit=False)
             experiment_date_time_range.experiment_date = experiment_date
             experiment_date_time_range.save()
-            if instance is None:
+            _ = db_instance is not None and (db_instance.start_time != experiment_date_time_range.start_time or \
+                                             db_instance.end_time != experiment_date_time_range.end_time)
+            if _:
+                experiment_date_time_range.slot_set.all().delete()
+                # to-do: Include warning.
+            if _ or instance is None:
                 experiment_date_time_range.create_slots()
-            else:
-                pass # to-do
             messages.add_message(request, messages.SUCCESS, 'The experiment date time range for %s was successfully saved.' % experiment_date)
             return HttpResponseRedirect(reverse('main-list_experiment_date_time_ranges', args=[experiment_date.id]))
     else:

@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
 from django.contrib.localflavor.us.models import PhoneNumberField
+from django.core.exceptions import ValidationError
 from django.db import models
 
 class Participant(models.Model):
@@ -64,13 +65,18 @@ class Qualification(models.Model):
     def __unicode__(self):
         return self.name
 
+class NonZeroPositiveSmallIntegerField(models.SmallIntegerField):
+    def validate(self, value, model_instance):
+        if value <= 0:
+            raise ValidationError('Ensure this value is greater than 0.')
+
 class Experiment(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField() # to-do: Required?
     researchers = models.ManyToManyField(Researcher)
     room = models.ForeignKey(Room)
     qualifications = models.ManyToManyField(Qualification) # to-do: Required?
-    length = models.PositiveSmallIntegerField(help_text='in minutes') # to-do: > 0
+    length = NonZeroPositiveSmallIntegerField(help_text='in minutes')
 
     class Meta:
         ordering = ('name',)
@@ -93,7 +99,6 @@ class ExperimentDateTimeRange(models.Model):
     experiment_date = models.ForeignKey(ExperimentDate)
     start_time = models.TimeField()
     end_time = models.TimeField()
-    # to-do: start_time + experiment.length <= end_time
     # to-do: Make sure no two ExperimentDateTimeRanges for one ExperimentDate overlap.
     # to-do: Make sure there are no room conflicts.
 
@@ -102,6 +107,12 @@ class ExperimentDateTimeRange(models.Model):
 
     def __unicode__(self):
         return '%s from %s to %s' % (self.experiment_date, self.start_time, self.end_time)
+
+    def clean(self):
+        start_datetime = datetime.combine(self.experiment_date.date, self.start_time)
+        end_datetime = datetime.combine(self.experiment_date.date, self.end_time)
+        if (start_datetime + timedelta(minutes=self.experiment_date.experiment.length)).time() > end_datetime.time():
+            raise ValidationError('The start time and end time are too close.')
 
     def create_slots(self):
         length = timedelta(minutes=self.experiment_date.experiment.length)
@@ -126,7 +137,8 @@ class Slot(models.Model):
     def save(self, *args, **kwargs):
         start_datetime = datetime.combine(self.experiment_date_time_range.experiment_date.date, self.start_time)
         end_datetime = start_datetime + timedelta(minutes=self.experiment_date_time_range.experiment_date.experiment.length)
-        # to-do: What if start_datetime.date() != end_datetime.date()?
+        if start_datetime.date() != end_datetime.date():
+            return
         self.end_time = end_datetime.time()
         super(Slot, self).save(*args, **kwargs)
 

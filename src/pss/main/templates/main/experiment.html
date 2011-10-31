@@ -9,7 +9,7 @@ $("#experiment_form").validate("{% if instance %}{% url ajax_validation-validate
 $("#dialog").dialog({
     autoOpen: false,
     modal: true,
-    buttons: {"Yes": function() { $("#delete").attr("name", "delete"); $("form").submit(); },
+    buttons: {"Yes": function() { $("#delete").attr("name", "delete"); $("form").submit(); }, {# to-do: Delete breaks if form has errors. #}
               "No": function() { $(this).dialog("close"); }}
 });
 $("#open").click(function() {
