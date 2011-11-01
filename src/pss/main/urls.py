@@ -19,6 +19,9 @@ def validate_experiment_date_form_callback(request, *args, **kwargs):
 def validate_experiment_date_form_alt_callback(request, *args, **kwargs):
     return {'instance': get_object_or_404(ExperimentDate, id=kwargs['id'], experiment__researchers__user=request.user)}
 
+def validate_experiment_date_time_range_form_callback(request, *args, **kwargs):
+    return {'experiment_date': get_object_or_404(ExperimentDate, id=kwargs['id'], experiment__researchers__user=request.user)}
+
 def validate_experiment_date_time_range_form_alt_callback(request, *args, **kwargs):
     return {'instance': get_object_or_404(ExperimentDateTimeRange, id=kwargs['id'], experiment_date__experiment__researchers__user=request.user)}
 
@@ -72,9 +75,10 @@ urlpatterns = patterns('',
         {'form_class': ExperimentDateForm,
          'callback': validate_experiment_date_form_alt_callback},
         name='ajax_validation-validate_experiment_date_form_alt'),
-    url(r'^ajax_validation/validate/experiment_date_time_range_form/$',
+    url(r'^ajax_validation/validate/experiment_date_time_range_form/(?P<id>[\d]+)/$',
         'ajax_validation.views.validate',
-        {'form_class': ExperimentDateTimeRangeForm},
+        {'form_class': ExperimentDateTimeRangeForm,
+         'callback': validate_experiment_date_time_range_form_callback},
         name='ajax_validation-validate_experiment_date_time_range_form'),
     url(r'^ajax_validation/validate/experiment_date_time_range_form_alt/(?P<id>[\d]+)/$',
         'ajax_validation.views.validate',

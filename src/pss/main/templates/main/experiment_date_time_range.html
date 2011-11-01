@@ -5,11 +5,11 @@
 {% block title %}{% block description %}{{ action }} Experiment Date Time Range for {{ experiment_date }}{% endblock %}{% endblock %}
 
 {% block jquery %}
-$("#experiment_date_time_range_form").validate("{% if instance %}{% url ajax_validation-validate_experiment_date_time_range_form_alt instance.id %}{% else %}{% url ajax_validation-validate_experiment_date_time_range_form %}{% endif %}", {callback: uniform_callback});
+$("#experiment_date_time_range_form").validate("{% if instance %}{% url ajax_validation-validate_experiment_date_time_range_form_alt instance.id %}{% else %}{% url ajax_validation-validate_experiment_date_time_range_form experiment_date.id %}{% endif %}", {callback: uniform_callback});
 $("#dialog").dialog({
     autoOpen: false,
     modal: true,
-    buttons: {"Yes": function() { $("#delete").attr("name", "delete"); $("form").submit(); }, {# to-do: Delete breaks if form has errors. #}
+    buttons: {"Yes": function() { $("#delete").attr("name", "delete"); $("form").unbind("submit").submit(); },
               "No": function() { $(this).dialog("close"); }}
 });
 $("#open").click(function() {

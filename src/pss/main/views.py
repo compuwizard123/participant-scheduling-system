@@ -143,7 +143,7 @@ def experiment_date_time_range_view(request, experiment_date_id=None, experiment
             instance.delete()
             messages.add_message(request, messages.SUCCESS, 'The experiment date time range for %s was successfully deleted.' % experiment_date)
             return HttpResponseRedirect(reverse('main-list_experiment_date_time_ranges', args=[experiment_date.id]))
-        form = ExperimentDateTimeRangeForm(request.POST, instance=instance)
+        form = ExperimentDateTimeRangeForm(experiment_date, request.POST, instance=instance)
         if form.is_valid():
             db_instance = instance is not None and ExperimentDateTimeRange.objects.get(id=instance.id) or None
             experiment_date_time_range = form.save(commit=False)
@@ -159,7 +159,7 @@ def experiment_date_time_range_view(request, experiment_date_id=None, experiment
             messages.add_message(request, messages.SUCCESS, 'The experiment date time range for %s was successfully saved.' % experiment_date)
             return HttpResponseRedirect(reverse('main-list_experiment_date_time_ranges', args=[experiment_date.id]))
     else:
-        form = ExperimentDateTimeRangeForm(instance=instance)
+        form = ExperimentDateTimeRangeForm(experiment_date, instance=instance)
     return render_to_response('main/experiment_date_time_range.html',
                               {'instance': instance,
                                'action': action,

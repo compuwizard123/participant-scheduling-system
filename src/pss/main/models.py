@@ -50,7 +50,7 @@ class Room(models.Model):
 
     class Meta:
         ordering = ('building', 'name',)
-        unique_together = (('building', 'name',),) 
+        unique_together = (('building', 'name',),)
 
     def __unicode__(self):
         return '%s %s' % (self.building, self.name)
@@ -99,20 +99,12 @@ class ExperimentDateTimeRange(models.Model):
     experiment_date = models.ForeignKey(ExperimentDate)
     start_time = models.TimeField()
     end_time = models.TimeField()
-    # to-do: Make sure no two ExperimentDateTimeRanges for one ExperimentDate overlap.
-    # to-do: Make sure there are no room conflicts.
 
     class Meta:
         ordering = ('experiment_date',)
 
     def __unicode__(self):
         return '%s from %s to %s' % (self.experiment_date, self.start_time, self.end_time)
-
-    def clean(self):
-        start_datetime = datetime.combine(self.experiment_date.date, self.start_time)
-        end_datetime = datetime.combine(self.experiment_date.date, self.end_time)
-        if (start_datetime + timedelta(minutes=self.experiment_date.experiment.length)).time() > end_datetime.time():
-            raise ValidationError('The start time and end time are too close.')
 
     def create_slots(self):
         length = timedelta(minutes=self.experiment_date.experiment.length)
