@@ -28,6 +28,7 @@ $("a.cancel").button({
 {% block content %}
 <h1>Experiments</h1>
 {% if experiments %}
+    <p><a href="{% url main-create_experiment %}" class="create">Create a new experiment</a></p>
     <table class="pretty">
         <thead>
             <tr>

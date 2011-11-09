@@ -24,6 +24,7 @@ $("a.cancel").button({
 <h1>Experiment Date Time Ranges for {{ experiment_date }}</h1>
 {% with experiment_date.experimentdatetimerange_set.all as experiment_date_time_ranges %}
     {% if experiment_date_time_ranges %}
+        <p><a href="{% url main-create_experiment_date_time_range experiment_date.id %}" class="create">Create a new experiment date time range for {{ experiment_date }}</a></p>
         <table class="pretty">
             <thead>
                 <tr>

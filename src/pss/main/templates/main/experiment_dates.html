@@ -29,6 +29,7 @@ $("a.cancel").button({
 <h1>Experiment Dates for {{ experiment }}</h1>
 {% with experiment.experimentdate_set.all as experiment_dates %}
     {% if experiment_dates %}
+        <p><a href="{% url main-create_experiment_date experiment.id %}" class="create">Create a new experiment date for {{ experiment }}</a></p>
         <table class="pretty">
             <thead>
                 <tr>
