@@ -13,9 +13,9 @@ $("a.create").button({
         primary: "ui-icon-plus"
     }
 });
-$("a.cancel").button({
+$("a.back").button({
     icons: {
-        primary: "ui-icon-cancel"
+        primary: "ui-icon-arrowthick-1-w"
     }
 });
 {% endblock %}
@@ -48,5 +48,5 @@ $("a.cancel").button({
     {% endif %}
 {% endwith %}
 <p><a href="{% url main-create_experiment_date_time_range experiment_date.id %}" class="create">Create a new experiment date time range for {{ experiment_date }}</a></p>
-<p><a href="{% url main-list_experiment_dates experiment_date.experiment.id %}" class="cancel">Cancel</a></p>
+<p><a href="{% url main-list_experiment_dates experiment_date.experiment.id %}" class="back">Go back</a></p>
 {% endblock %}

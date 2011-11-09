@@ -18,9 +18,9 @@ $("a.create").button({
         primary: "ui-icon-plus"
     }
 });
-$("a.cancel").button({
+$("a.back").button({
     icons: {
-        primary: "ui-icon-cancel"
+        primary: "ui-icon-arrowthick-1-w"
     }
 });
 {% endblock %}
@@ -61,5 +61,5 @@ $("a.cancel").button({
     <p>There are no experiments, yet.</p>
 {% endif %}
 <p><a href="{% url main-create_experiment %}" class="create">Create a new experiment</a></p>
-<p><a href="{% url main-index %}" class="cancel">Cancel</a></p>
+<p><a href="{% url main-index %}" class="back">Go back</a></p>
 {% endblock %}
