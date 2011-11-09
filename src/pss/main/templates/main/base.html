@@ -58,6 +58,7 @@ $(document).ready(function() {
             <a href="{% url main-index %}"{% if active.home %} class="active"{% endif %}>Home</a>
             {% if user.is_authenticated %}
                 <a href="{% url main-list_experiments %}"{% if active.experiments %} class="active"{% endif %}>Experiments</a>
+                <a href="{% url auth_password_change %}"{% if active.change_password %} class="active"{% endif %}>Change password</a>
                 <a href="{% url auth_logout %}">Log out</a>
             {% else %}
                 <a href="{% url auth_login %}"{% if active.log_in %} class="active"{% endif %}>Log in</a>

@@ -6,9 +6,10 @@ from django.core.urlresolvers import reverse
 def pss_context_processor(request):
     active = {
         'home': request.path == reverse('main-index'),
-        'experiments': request.path.startswith('/experiments'), # Hacky...
+        'experiments': request.path.startswith(reverse('main-list_experiments')),
+        'change_password': request.path.startswith(reverse('auth_password_change')),
         'log_in': request.path == reverse('auth_login'),
-        'sign_up': request.path == reverse('registration_register'),
+        'sign_up': request.path.startswith(reverse('registration_register')),
     }
     year = date.today().year
     if year > 2011:
