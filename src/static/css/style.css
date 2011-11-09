@@ -38,6 +38,9 @@ ul.messages li.success {
     background : #c8ffbf;
     border : 2px solid #a2ef95;
 }
+.left {
+    float : left;
+}
 #container {
     background : #ffffff;
     margin : 0 auto;
