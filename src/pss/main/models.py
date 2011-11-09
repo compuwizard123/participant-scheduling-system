@@ -86,7 +86,7 @@ class Experiment(models.Model):
 
 class ExperimentDate(models.Model):
     experiment = models.ForeignKey(Experiment)
-    date = models.DateField()
+    date = models.DateField(help_text='yyyy-mm-dd')
 
     class Meta:
         ordering = ('experiment', 'date',)
@@ -97,8 +97,8 @@ class ExperimentDate(models.Model):
 
 class ExperimentDateTimeRange(models.Model):
     experiment_date = models.ForeignKey(ExperimentDate)
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    start_time = models.TimeField(help_text='hh:mm')
+    end_time = models.TimeField(help_text='hh:mm')
 
     class Meta:
         ordering = ('experiment_date',)

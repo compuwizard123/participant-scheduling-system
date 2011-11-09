@@ -28,10 +28,10 @@ $(document).ready(function() {
         }
     });
     $("form.uniForm").uniform();
-    $("input.dateinput").datepicker({dateFormat: "yy-mm-dd"});
-    $("input.timeinput").timepicker({zIndex: 1});
+    $("input.dateinput").datepicker({dateFormat: "yy-mm-dd", constrainInput: false});
+    $("input.timeinput").timepicker({zIndex: 1, showPeriodLabels: false});
     $(":input:visible:enabled").each(function() {
-        if ($(this).val() == "" || $(this).parent().hasClass("error")) {
+        if (($(this).val() == "" || $(this).parent().hasClass("error")) && !$(this).hasClass("timeinput") && !$(this).hasClass("dateinput")){
            $(this).select();
            return false;
         }
