@@ -54,6 +54,11 @@ $(document).ready(function() {
         <div id="header">
             <a href="{% url main-index %}"><img src="{{ STATIC_URL }}images/header.jpg" alt="{{ SITE_NAME }}" /></a>
         </div>
+        {% if user.is_authenticated %}
+            <div id="welcome">
+                <span>Welcome, {{ user.get_full_name|default:user.username }}</span>
+            </div>
+        {% endif %}
         <div id="menu">
             <a href="{% url main-index %}"{% if active.home %} class="active"{% endif %}>Home</a>
             {% if user.is_authenticated %}

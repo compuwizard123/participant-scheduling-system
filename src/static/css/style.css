@@ -67,3 +67,8 @@ ul.messages li.success {
 #menu {
     padding : 10px 0;
 }
+#welcome {
+    line-height : 150%;
+    padding : 10px 20px;
+    text-align : right;
+}
