@@ -22,6 +22,11 @@
 //<![CDATA[
 $(document).ready(function() {
     $("#menu a").button();
+    $("#menu a.active").button("option", {
+        icons: {
+            primary: "ui-icon-star"
+        }
+    });
     $("form.uniForm").uniform();
     $("input.dateinput").datepicker({dateFormat: "yy-mm-dd"});
     $("input.timeinput").timepicker({zIndex: 1});
@@ -50,13 +55,13 @@ $(document).ready(function() {
             <a href="{% url main-index %}"><img src="{{ STATIC_URL }}images/header.jpg" alt="{{ SITE_NAME }}" /></a>
         </div>
         <div id="menu">
-            <a href="{% url main-index %}">Home</a>
+            <a href="{% url main-index %}"{% if active.home %} class="active"{% endif %}>Home</a>
             {% if user.is_authenticated %}
-                <a href="{% url main-list_experiments %}">Experiments</a>
+                <a href="{% url main-list_experiments %}"{% if active.experiments %} class="active"{% endif %}>Experiments</a>
                 <a href="{% url auth_logout %}">Log out</a>
             {% else %}
-                <a href="{% url auth_login %}">Log in</a>
-                <a href="{% url registration_register %}">Sign up</a>
+                <a href="{% url auth_login %}"{% if active.log_in %} class="active"{% endif %}>Log in</a>
+                <a href="{% url registration_register %}"{% if active.sign_up %} class="active"{% endif %}>Sign up</a>
             {% endif %}
         </div>
         <div id="content" class="pretty-links">
