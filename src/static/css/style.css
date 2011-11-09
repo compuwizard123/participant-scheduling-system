@@ -9,6 +9,9 @@ body {
     font-size : 12px;
     text-align : center;
 }
+strong {
+    font-weight : bold;
+}
 table.pretty {
     margin : 10px 0;
     width : 100%;

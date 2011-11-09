@@ -6,5 +6,10 @@
 
 {% block content %}
 <h1>Welcome{% if user.is_authenticated %}, {{ user.get_full_name|default:user.username }}{% endif %}</h1>
-<p><a href="mailto:{{ "allie"|mungify }}">Contact</a></p>
+<p>At the Human-Computer Interaction Lab, we are interested in designing and developing interactive systems&mdash;particularly social agents and robots&mdash;and understanding their relationship with people. Our current work spans analyzing and building computational models of human social behavior, developing robots and agents that can enact social behavior, and designing applications that can provide people with positive social and cognitive benefits in education, rehabilitation, and therapy.</p>
+{% if user.is_anonymous %}
+    <p><strong>Participants</strong>, please <a href="{% url registration_register %}">sign up</a> or <a href="{% url auth_login %}">log in</a> to manage your appointments.</p>
+    <p><strong>Researchers</strong>, please <a href="{% url auth_login %}">log in</a> to manage your experiments.</p>
+{% endif %}
+<p>Feel free to <a href="mailto:{{ "allie"|mungify }}">contact</a> us.</p>
 {% endblock %}
