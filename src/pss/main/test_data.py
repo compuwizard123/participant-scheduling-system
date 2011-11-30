@@ -12,17 +12,17 @@ def run():
 
     from django.contrib.auth.models import User
 
-    user = User.objects.create_user('groppcw', 'groppcw@rose-hulman.edu')
-    user.first_name = 'Chris'
-    user.last_name = 'Gropp'
+    user = User.objects.create_user('cahilltr', 'cahilltr@rose-hulman.edu')
+    user.first_name = 'Trey'
+    user.last_name = 'Cahill'
     user.is_staff = True
     user.is_superuser = True
     user.set_password('temp123')
     user.save()
 
-    user = User.objects.create_user('risdenkj', 'risdenkj@rose-hulman.edu')
-    user.first_name = 'Kevin'
-    user.last_name = 'Risden'
+    user = User.objects.create_user('greenwka', 'greenwka@rose-hulman.edu')
+    user.first_name = 'Katherine'
+    user.last_name = 'Greenwald'
     user.is_staff = True
     user.is_superuser = True
     user.set_password('temp123')
@@ -36,9 +36,33 @@ def run():
     user.set_password('temp123')
     user.save()
 
-    user = User.objects.create_user('cahilltr', 'cahilltr@rose-hulman.edu')
-    user.first_name = 'Trey'
-    user.last_name = 'Cahill'
+    user = User.objects.create_user('risdenkj', 'risdenkj@rose-hulman.edu')
+    user.first_name = 'Kevin'
+    user.last_name = 'Risden'
+    user.is_staff = True
+    user.is_superuser = True
+    user.set_password('temp123')
+    user.save()
+
+    user = User.objects.create_user('chenowet', 'chenowet@rose-hulman.edu')
+    user.first_name = 'Stephen'
+    user.last_name = 'Chenoweth'
+    user.is_staff = True
+    user.is_superuser = True
+    user.set_password('temp123')
+    user.save()
+
+    user = User.objects.create_user('loaj', 'loaj@rose-hulman.edu')
+    user.first_name = 'Alexander'
+    user.last_name = 'Lo'
+    user.is_staff = True
+    user.is_superuser = True
+    user.set_password('temp123')
+    user.save()
+
+    user = User.objects.create_user('mayhewsw', 'mayhewsw@rose-hulman.edu')
+    user.first_name = 'Stephen'
+    user.last_name = 'Mayhew'
     user.is_staff = True
     user.is_superuser = True
     user.set_password('temp123')
