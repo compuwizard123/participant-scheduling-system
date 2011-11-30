@@ -98,9 +98,12 @@ def run():
 
     researcher1 = Researcher.objects.create(user=User.objects.get(username='aterrell'), phone_number='(123) 123-1230')
     researcher2 = Researcher.objects.create(user=User.objects.get(username='cahilltr'), phone_number='(123) 123-1231')
-    researcher3 = Researcher.objects.create(user=User.objects.get(username='groppcw'), phone_number='(123) 123-1232')
+    researcher3 = Researcher.objects.create(user=User.objects.get(username='greenwka'), phone_number='(123) 123-1232')
     researcher4 = Researcher.objects.create(user=User.objects.get(username='jawaidss'), phone_number='(123) 123-1233')
     researcher5 = Researcher.objects.create(user=User.objects.get(username='risdenkj'), phone_number='(123) 123-1234')
+    researcher6 = Researcher.objects.create(user=User.objects.get(username='chenowet'), phone_number='(123) 123-1235')
+    researcher7 = Researcher.objects.create(user=User.objects.get(username='loaj'), phone_number='(123) 123-1236')
+    researcher8 = Researcher.objects.create(user=User.objects.get(username='mayhewsw'), phone_number='(123) 123-1237')
 
     experiment1 = Experiment.objects.create(name='Short loin hamburger ground round frankfurter', description='Turducken hamburger tail brisket beef ribs', room=room8, length=50)
     experiment2 = Experiment.objects.create(name='Prosciutto meatball biltong spare ribs, tenderloin swine ham hock andouille filet mignon', description='Bresaola short ribs turkey chuck pork tail salami, capicola biltong', room=room1, length=30)
