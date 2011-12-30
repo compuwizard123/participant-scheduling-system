@@ -11,7 +11,7 @@ $("#authentication_form").validate("{% url ajax_validation-validate_authenticati
 {% block content %}
 <h1>Log in</h1>
 {% if not user.is_authenticated %}
-    <form action="." method="post" id="authentication_form" class="uniForm">
+    <form action="" method="post" id="authentication_form" class="uniForm">
         {% csrf_token %}
         {{ form|as_uni_form }}
         <div class="buttonHolder">
