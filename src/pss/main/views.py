@@ -5,8 +5,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
-from pss.main.forms import ExperimentForm, ExperimentDateForm, ExperimentDateTimeRangeForm
-from pss.main.models import Experiment, ExperimentDate, ExperimentDateTimeRange, Researcher, Slot
+from pss.main.forms import ExperimentForm, ExperimentDateForm, ExperimentDateTimeRangeForm, UserForm, ParticipantForm, ResearcherForm
+from pss.main.models import Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Researcher, Slot
 
 def index(request):
     return render_to_response('main/index.html',
@@ -165,4 +165,41 @@ def experiment_date_time_range_view(request, experiment_date_id=None, experiment
                                'action': action,
                                'experiment_date': experiment_date,
                                'form': form},
+                              RequestContext(request))
+
+@login_required
+def profile(request):
+    user_instance = request.user
+    try:
+        researcher_or_participant_instance = user_instance.researcher
+        # editing researcher
+    except Researcher.DoesNotExist:
+        try:
+            researcher_or_participant_instance = user_instance.participant
+            # editing participant
+        except Participant.DoesNotExist:
+            researcher_or_participant_instance = None
+            # creating participant
+        ResearcherOrParticipantForm = ParticipantForm
+    else:
+        ResearcherOrParticipantForm = ResearcherForm
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=user_instance)
+        researcher_or_participant_form = ResearcherOrParticipantForm(request.POST, instance=researcher_or_participant_instance)
+        if user_form.is_valid() and researcher_or_participant_form.is_valid():
+            user = user_form.save()
+            researcher_or_participant = researcher_or_participant_form.save(commit=False)
+            researcher_or_participant.user = user
+            researcher_or_participant.save()
+            messages.add_message(request, messages.SUCCESS,
+                                 'Your profile was successfully saved.')
+            return HttpResponseRedirect(reverse('main-profile'))
+        messages.add_message(request, messages.ERROR,
+                             'Please correct the errors below.')
+    else:
+        user_form = UserForm(instance=user_instance)
+        researcher_or_participant_form = ResearcherOrParticipantForm(instance=researcher_or_participant_instance)
+    return render_to_response('main/profile.html',
+                              {'user_form': user_form,
+                               'researcher_or_participant_form': researcher_or_participant_form},
                               RequestContext(request))

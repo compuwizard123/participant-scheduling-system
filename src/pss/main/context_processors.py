@@ -7,7 +7,7 @@ def pss_context_processor(request):
     active = {
         'home': request.path == reverse('main-index'),
         'experiments': request.path.startswith(reverse('main-list_experiments')),
-        'change_password': request.path.startswith(reverse('auth_password_change')),
+        'profile': request.path == reverse('main-profile') or request.path.startswith(reverse('auth_password_change')),
         'log_in': request.path == reverse('auth_login'),
         'sign_up': request.path.startswith(reverse('registration_register')),
     }

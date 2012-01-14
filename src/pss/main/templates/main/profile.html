@@ -1,0 +1,25 @@
+{% extends "main/base.html" %}
+
+{% load uni_form_tags %}
+
+{% block title %}{% block description %}Profile{% endblock %}{% endblock %}
+
+{% block content %}
+<h1>Profile</h1>
+<form action="." method="post" class="uniForm">
+    {% csrf_token %}
+    <div class="ctrlHolder">
+        <div class="readOnlyLabel">E-mail address</div>
+        <div class="readOnly">{{ user.email }}</div>
+    </div>
+    <div class="ctrlHolder">
+        <div class="readOnlyLabel">Password</div>
+        <div class="readOnly"><a href="{% url auth_password_change %}">Change password</a></div>
+    </div>
+    {{ user_form|as_uni_form }}
+    {{ researcher_or_participant_form|as_uni_form }}
+    <div class="buttonHolder">
+        <input type="submit" value="Save" class="primaryAction" />
+    </div>
+</form>
+{% endblock %}
