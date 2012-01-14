@@ -77,6 +77,7 @@ class Experiment(models.Model):
     room = models.ForeignKey(Room)
     qualifications = models.ManyToManyField(Qualification) # to-do: Required?
     length = NonZeroPositiveSmallIntegerField(help_text='in minutes')
+    number_of_participants_needed = NonZeroPositiveSmallIntegerField(default=1, help_text='per slot')
 
     class Meta:
         ordering = ('name',)

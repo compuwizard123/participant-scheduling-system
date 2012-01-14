@@ -105,7 +105,7 @@ def run():
     researcher7 = Researcher.objects.create(user=User.objects.get(username='loaj'), phone_number='(123) 123-1236')
     researcher8 = Researcher.objects.create(user=User.objects.get(username='mayhewsw'), phone_number='(123) 123-1237')
 
-    experiment1 = Experiment.objects.create(name='Short loin hamburger ground round frankfurter', description='Turducken hamburger tail brisket beef ribs', room=room8, length=50)
+    experiment1 = Experiment.objects.create(name='Short loin hamburger ground round frankfurter', description='Turducken hamburger tail brisket beef ribs', room=room8, length=50, number_of_participants_needed=2)
     experiment2 = Experiment.objects.create(name='Prosciutto meatball biltong spare ribs, tenderloin swine ham hock andouille filet mignon', description='Bresaola short ribs turkey chuck pork tail salami, capicola biltong', room=room1, length=30)
     experiment3 = Experiment.objects.create(name='Boudin biltong shankle pork, prosciutto ground round chuck t-bone shoulder tri-tip turducken', description='Ground round t-bone andouille pork belly, beef venison ham chicken', room=room6, length=50)
     experiment4 = Experiment.objects.create(name='Tenderloin swine ham hock andouille filet mignon, prosciutto meatball biltong spare ribs', description='Prosciutto strip steak pastrami drumstick, capicola fatback shoulder pancetta filet mignon sirloin brisket t-bone tail tongue', room=room6, length=55)
@@ -113,7 +113,7 @@ def run():
     experiment6 = Experiment.objects.create(name='Fatback chuck tail flank pastrami tongue leberkase, andouille sirloin frankfurter tri-tip', description='Short loin hamburger ground round frankfurter', room=room5, length=40)
     experiment7 = Experiment.objects.create(name='Flank shoulder tri-tip shankle biltong', description='Shankle tongue cow strip steak, short ribs beef tenderloin ball tip leberkase filet mignon', room=room7, length=40)
     experiment8 = Experiment.objects.create(name='Pork loin jowl capicola, ham hock ground round turkey drumstick', description='Boudin biltong shankle pork, prosciutto ground round chuck t-bone shoulder tri-tip turducken frankfurter', room=room1, length=15)
-    experiment9 = Experiment.objects.create(name='Tri-tip frankfurter ham beef ribs short loin leberkase, jerky meatloaf brisket drumstick ball tip', description='Fatback chuck tail flank pastrami tongue leberkase, andouille sirloin frankfurter tri-tip', room=room7, length=20)
+    experiment9 = Experiment.objects.create(name='Tri-tip frankfurter ham beef ribs short loin leberkase, jerky meatloaf brisket drumstick ball tip', description='Fatback chuck tail flank pastrami tongue leberkase, andouille sirloin frankfurter tri-tip', room=room7, length=20, number_of_participants_needed=4)
 
     experiment1.researchers.add(researcher5)
     experiment1.researchers.add(researcher1)

@@ -26,7 +26,7 @@ def qualifications(obj):
     return ', '.join(map(unicode, obj.qualifications.all()))
 
 class ExperimentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', researchers, 'room', qualifications, 'length')
+    list_display = ('name', 'description', researchers, 'room', qualifications, 'length', 'number_of_participants_needed',)
     search_fields = ('name', 'description',)
 
 class ExperimentDateAdmin(admin.ModelAdmin):

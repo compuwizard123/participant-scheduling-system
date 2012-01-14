@@ -38,6 +38,7 @@ $("a.back").button({
                 <th>Room</th>
                 <th>Qualifications</th>
                 <th>Length (in minutes)</th>
+                <th>Number of Participants Needed (per slot)</th>
                 <th>Edit</th>
                 <th>Experiment Dates</th>
             </tr>
@@ -51,6 +52,7 @@ $("a.back").button({
                     <td>{{ experiment.room }}</td>
                     <td>{{ experiment.qualifications.all|join:", " }}</td>
                     <td>{{ experiment.length }}</td>
+                    <td>{{ experiment.number_of_participants_needed }}</td>
                     <td><a href="{% url main-edit_experiment experiment.id %}" class="edit">Edit</a></td>
                     <td><a href="{% url main-list_experiment_dates experiment.id %}" class="experiment_dates">Experiment Dates</a></td>
                 </tr>
