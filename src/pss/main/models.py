@@ -57,7 +57,7 @@ class Room(models.Model):
 
 class Qualification(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    description = models.TextField() # to-do: Required?
+    description = models.TextField()
 
     class Meta:
         ordering = ('name',)
@@ -72,10 +72,10 @@ class NonZeroPositiveSmallIntegerField(models.SmallIntegerField):
 
 class Experiment(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    description = models.TextField() # to-do: Required?
+    description = models.TextField()
     researchers = models.ManyToManyField(Researcher)
     room = models.ForeignKey(Room)
-    qualifications = models.ManyToManyField(Qualification) # to-do: Required?
+    qualifications = models.ManyToManyField(Qualification)
     length = NonZeroPositiveSmallIntegerField(help_text='in minutes')
     number_of_participants_needed = NonZeroPositiveSmallIntegerField(default=1, help_text='per slot')
 
