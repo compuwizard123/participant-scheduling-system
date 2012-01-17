@@ -4,6 +4,14 @@
 
 {% block title %}{% block description %}Profile{% endblock %}{% endblock %}
 
+{% block jquery %}
+$("a.cancel").button({
+    icons: {
+        primary: "ui-icon-cancel"
+    }
+});
+{% endblock %}
+
 {% block content %}
 <h1>Profile</h1>
 <form action="." method="post" class="uniForm">
@@ -22,4 +30,5 @@
         <input type="submit" value="Save" class="primaryAction" />
     </div>
 </form>
+<p><a href="{% url main-index %}" class="cancel">Cancel and discard all unsaved changes</a></p>
 {% endblock %}
