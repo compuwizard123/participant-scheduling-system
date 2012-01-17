@@ -102,8 +102,6 @@ def run():
     researcher4 = Researcher.objects.create(user=User.objects.get(username='jawaidss'), phone_number='(123) 123-1233')
     researcher5 = Researcher.objects.create(user=User.objects.get(username='risdenkj'), phone_number='(123) 123-1234')
     researcher6 = Researcher.objects.create(user=User.objects.get(username='chenowet'), phone_number='(123) 123-1235')
-    researcher7 = Researcher.objects.create(user=User.objects.get(username='loaj'), phone_number='(123) 123-1236')
-    researcher8 = Researcher.objects.create(user=User.objects.get(username='mayhewsw'), phone_number='(123) 123-1237')
 
     experiment1 = Experiment.objects.create(name='Short loin hamburger ground round frankfurter', description='Turducken hamburger tail brisket beef ribs', room=room8, length=50, number_of_participants_needed=2)
     experiment2 = Experiment.objects.create(name='Prosciutto meatball biltong spare ribs, tenderloin swine ham hock andouille filet mignon', description='Bresaola short ribs turkey chuck pork tail salami, capicola biltong', room=room1, length=30)
@@ -226,3 +224,6 @@ def run():
     experiment_date_time_range19.create_slots()
     experiment_date_time_range20 = ExperimentDateTimeRange.objects.create(experiment_date=experiment_date12, start_time=datetime.time(10, 20), end_time=datetime.time(11, 15))
     experiment_date_time_range20.create_slots()
+
+    participant1 = Participant.objects.create(user=User.objects.get(username='loaj'), phone_number='(123) 123-1236')
+    participant2 = Participant.objects.create(user=User.objects.get(username='mayhewsw'), phone_number='(123) 123-1237')
