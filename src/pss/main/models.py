@@ -138,6 +138,7 @@ class Slot(models.Model):
 class Appointment(models.Model):
     participant = models.ForeignKey(Participant)
     slot = models.ForeignKey(Slot)
+    is_cancelled = models.BooleanField()
 
     class Meta:
         ordering = ('slot',)

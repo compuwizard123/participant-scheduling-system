@@ -5,8 +5,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
-from pss.main.forms import ExperimentForm, ExperimentDateForm, ExperimentDateTimeRangeForm, UserForm, ParticipantForm, ResearcherForm
-from pss.main.models import Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Researcher, Slot
+from pss.main.forms import AppointmentForm, ExperimentForm, ExperimentDateForm, ExperimentDateTimeRangeForm, UserForm, ParticipantForm, ResearcherForm
+from pss.main.models import Appointment, Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Researcher, Slot
 
 def index(request):
     return render_to_response('main/index.html',
@@ -17,11 +17,14 @@ def experiments_view(request):
     try:
         researcher = request.user.researcher
     except Researcher.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
-        return HttpResponseRedirect(reverse('main-index'))
-    experiments = researcher.experiment_set.all()
+        is_researcher = False
+        experiments = Experiment.objects.all()
+    else:
+        is_researcher = True
+        experiments = researcher.experiment_set.all()
     return render_to_response('main/experiments.html',
-                              {'experiments': experiments},
+                              {'experiments': experiments,
+                               'is_researcher': is_researcher},
                               RequestContext(request))
 
 @login_required
@@ -202,4 +205,58 @@ def profile(request):
     return render_to_response('main/profile.html',
                               {'user_form': user_form,
                                'researcher_or_participant_form': researcher_or_participant_form},
+                              RequestContext(request))
+
+@login_required
+def appointments_view(request):
+    try:
+        participant = request.user.participant
+    except Participant.DoesNotExist:
+        # to-do
+        is_participant = False
+        appointments = Appointment.objects.none()
+    else:
+        is_participant = True
+        appointments = participant.appointment_set.all()
+    return render_to_response('main/appointments.html',
+                              {'appointments': appointments,
+                               'is_participant': is_participant},
+                              RequestContext(request))
+
+@login_required
+def appointment_view(request, experiment_id=None, appointment_id=None):
+    try:
+        participant = request.user.participant
+    except Participant.DoesNotExist:
+        # to-do
+        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        return HttpResponseRedirect(reverse('main-index'))
+    if experiment_id is not None:
+        experiment_instance = get_object_or_404(Experiment, id=experiment_id)
+        appointment_instance = None
+        action = 'Create'
+    else: # if appointment_id is not None:
+        appointment_instance = get_object_or_404(Appointment, id=appointment_id, participant=participant)
+        experiment_instance = appointment_instance.slot.experiment_date_time_range.experiment_date.experiment
+        action = 'Edit'
+    if request.method == 'POST':
+        # to-do
+        #if instance is not None and 'delete' in request.POST:
+        #    instance.delete()
+        #    messages.add_message(request, messages.SUCCESS, 'The appointment was successfully deleted.')
+        #    return HttpResponseRedirect(reverse('main-list_appointments'))
+        form = AppointmentForm(experiment_instance, request.POST, instance=appointment_instance)
+        if form.is_valid():
+            appointment = form.save(commit=False)
+            appointment.participant = participant
+            appointment.save()
+            messages.add_message(request, messages.SUCCESS, 'The appointment was successfully saved.')
+            return HttpResponseRedirect(reverse('main-list_appointments'))
+    else:
+        form = AppointmentForm(experiment_instance, instance=appointment_instance)
+    return render_to_response('main/appointment.html',
+                              {'appointment_instance': appointment_instance,
+                               'experiment_instance': experiment_instance,
+                               'action': action,
+                               'form': form},
                               RequestContext(request))

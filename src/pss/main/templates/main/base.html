@@ -64,6 +64,7 @@ $(document).ready(function() {
             {% if user.is_authenticated %}
                 <a href="{% url main-list_experiments %}"{% if active.experiments %} class="active"{% endif %}>Experiments</a>
                 <a href="{% url main-profile %}"{% if active.profile %} class="active"{% endif %}>Profile</a>
+                <a href="{% url main-list_appointments %}"{% if active.appointments %} class="active"{% endif %}>Appointments</a>
                 <a href="{% url auth_logout %}">Log out</a>
             {% else %}
                 <a href="{% url auth_login %}"{% if active.log_in %} class="active"{% endif %}>Log in</a>

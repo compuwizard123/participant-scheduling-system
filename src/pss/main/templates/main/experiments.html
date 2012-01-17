@@ -3,21 +3,29 @@
 {% block title %}{% block description %}Experiments{% endblock %}{% endblock %}
 
 {% block jquery %}
-$("a.edit").button({
-    icons: {
-        primary: "ui-icon-pencil"
-    }
-});
-$("a.experiment_dates").button({
-    icons: {
-        primary: "ui-icon-calendar"
-    }
-});
-$("a.create").button({
-    icons: {
-        primary: "ui-icon-plus"
-    }
-});
+{% if is_researcher %}
+    $("a.edit").button({
+        icons: {
+            primary: "ui-icon-pencil"
+        }
+    });
+    $("a.experiment_dates").button({
+        icons: {
+            primary: "ui-icon-calendar"
+        }
+    });
+    $("a.create").button({
+        icons: {
+            primary: "ui-icon-plus"
+        }
+    });
+{% else %}
+    $("a.sign_up").button({
+        icons: {
+            primary: "ui-icon-check"
+        }
+    });
+{% endif %}
 $("a.back").button({
     icons: {
         primary: "ui-icon-arrowthick-1-w"
@@ -28,7 +36,9 @@ $("a.back").button({
 {% block content %}
 <h1>Experiments</h1>
 {% if experiments %}
-    <p><a href="{% url main-create_experiment %}" class="create">Create a new experiment</a></p>
+    {% if is_researcher %}
+        <p><a href="{% url main-create_experiment %}" class="create">Create a new experiment</a></p>
+    {% endif %}
     <table class="pretty">
         <thead>
             <tr>
@@ -39,8 +49,12 @@ $("a.back").button({
                 <th>Qualifications</th>
                 <th>Length (in minutes)</th>
                 <th>Number of Participants Needed (per slot)</th>
-                <th>Edit</th>
-                <th>Experiment Dates</th>
+                {% if is_researcher %}
+                    <th>Edit</th>
+                    <th>Experiment Dates</th>
+                {% else %}
+                    <th>Sign Up</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -53,8 +67,12 @@ $("a.back").button({
                     <td>{{ experiment.qualifications.all|join:", " }}</td>
                     <td>{{ experiment.length }}</td>
                     <td>{{ experiment.number_of_participants_needed }}</td>
-                    <td><a href="{% url main-edit_experiment experiment.id %}" class="edit">Edit</a></td>
-                    <td><a href="{% url main-list_experiment_dates experiment.id %}" class="experiment_dates">Experiment Dates</a></td>
+                    {% if is_researcher %}
+                        <td><a href="{% url main-edit_experiment experiment.id %}" class="edit">Edit</a></td>
+                        <td><a href="{% url main-list_experiment_dates experiment.id %}" class="experiment_dates">Experiment Dates</a></td>
+                    {% else %}
+                        <td><a href="{% url main-create_appointment experiment.id %}" class="sign_up">Sign Up</a></td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </tbody>
@@ -62,6 +80,8 @@ $("a.back").button({
 {% else %}
     <p>There are no experiments, yet.</p>
 {% endif %}
-<p><a href="{% url main-create_experiment %}" class="create">Create a new experiment</a></p>
+{% if is_researcher %}
+    <p><a href="{% url main-create_experiment %}" class="create">Create a new experiment</a></p>
+{% endif %}
 <p><a href="{% url main-index %}" class="back">Go back</a></p>
 {% endblock %}

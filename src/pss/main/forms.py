@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django import forms
 from django.contrib.auth.models import User
 
-from pss.main.models import Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Researcher
+from pss.main.models import Appointment, Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Researcher, Slot
 
 class ExperimentForm(forms.ModelForm):
     # to-do: Be able to create qualifications and rooms.
@@ -86,3 +86,12 @@ class ResearcherForm(forms.ModelForm):
     class Meta:
         model = Researcher
         exclude = ('user',)
+
+class AppointmentForm(forms.ModelForm):
+    class Meta:
+        model = Appointment
+        exclude = ('participant',)
+
+    def __init__(self, experiment, *args, **kwargs):
+        super(AppointmentForm, self).__init__(*args, **kwargs)
+        self.fields['slot'].queryset = Slot.objects.filter(experiment_date_time_range__experiment_date__experiment=experiment)
