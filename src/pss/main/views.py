@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
@@ -260,3 +260,26 @@ def appointment_view(request, experiment_id=None, appointment_id=None):
                                'action': action,
                                'form': form},
                               RequestContext(request))
+
+def cancel_appointment(request, id):
+    """
+    An AJAX view
+    """
+    if not request.is_ajax():
+        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        return HttpResponseRedirect(reverse('main-index'))
+    if request.user.is_anonymous():
+        return HttpResponse('Anonymous user') # to-do: Better error
+    try:
+        participant = request.user.participant
+    except Participant.DoesNotExist:
+        return HttpResponse('No profile') # to-do: Better error
+    try:
+        appointment = participant.appointment_set.get(id=id)
+    except Appointment.DoesNotExist:
+        return HttpResponse('Invalid ID') # to-do: Better error
+    if appointment.is_cancelled:
+        return HttpResponse('The appointment is already cancelled.')
+    appointment.is_cancelled = True
+    appointment.save()
+    return HttpResponse('The appointment was successfully cancelled.')

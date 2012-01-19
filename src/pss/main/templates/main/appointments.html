@@ -4,11 +4,35 @@
 
 {% block jquery %}
 {% if is_participant %}
-    $("a.edit").button({
+    $("a.cancel").button({
         icons: {
-            primary: "ui-icon-pencil"
+            primary: "ui-icon-cancel"
         }
+    }).click(function() {
+        var the_button = $(this);
+        $("<div><p>Are you sure that you want to cancel this appointment?</p></div>").dialog({
+            modal: true,
+            buttons: {
+                "Yes": function() {
+                    var the_dialog = $(this);
+                    $.post(
+                        the_button.attr("href"),
+                        function(response) {
+                            the_dialog.find("p").html(response);
+                            the_dialog.dialog("option", "buttons", {});
+                            the_button.button("option", "disabled", true);
+                            the_button.parent("td").siblings("td").eq(-1).html("yes");
+                        }
+                    );
+                },
+                "No": function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        return false;
     });
+    $("a.disabled").button("option", "disabled", true);
 {% else %}
     {# to-do #}
 {% endif %}
@@ -32,7 +56,7 @@ $("a.back").button({
                 <th>End Time</th>
                 <th>Is Cancelled?</th>
                 {% if is_participant %}
-                    <th>Edit</th>
+                    <th>Cancel</th>
                 {% else %}
                     {# to-do #}
                 {% endif %}
@@ -48,7 +72,7 @@ $("a.back").button({
                     <td>{{ appointment.slot.end_time }}</td>
                     <td>{{ appointment.is_cancelled|yesno }}</td>
                     {% if is_participant %}
-                        <td><a href="{% url main-edit_appointment appointment.id %}" class="edit">Edit</a></td>
+                        <td><a href="{% url main-cancel_appointment appointment.id %}" class="cancel{% if appointment.is_cancelled %} disabled{% endif %}">Cancel</a></td>
                     {% else %}
                         {# to-do #}
                     {% endif %}
