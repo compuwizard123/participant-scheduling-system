@@ -20,12 +20,21 @@ def index(request):
 
 @login_required
 def experiments_view(request):
+    user = request.user
     try:
-        researcher = request.user.researcher
+        researcher = user.researcher
     except Researcher.DoesNotExist:
+        try:
+            user.participant
+        except Participant.DoesNotExist:
+            # No profile
+            messages.add_message(request, messages.ERROR, 'Please create a profile first.') # to-do: Better error
+            return HttpResponseRedirect(reverse('main-profile'))
+        # Participant
         is_researcher = False
         experiments = Experiment.objects.all()
     else:
+        # Researcher
         is_researcher = True
         experiments = researcher.experiment_set.all()
     return render_to_response('main/experiments.html',
@@ -215,18 +224,23 @@ def profile(request):
 
 @login_required
 def appointments_view(request):
+    user = request.user
     try:
-        participant = request.user.participant
+        participant = user.participant
     except Participant.DoesNotExist:
-        # to-do
-        is_participant = False
-        appointments = Appointment.objects.none()
-    else:
-        is_participant = True
-        appointments = participant.appointment_set.all()
+        try:
+            user.researcher
+        except Researcher.DoesNotExist:
+            # No profile
+            messages.add_message(request, messages.ERROR, 'Please create a profile first.') # to-do: Better error
+            return HttpResponseRedirect(reverse('main-profile'))
+        # Researcher
+        messages.add_message(request, messages.ERROR, 'Please select an experiment.') # to-do: Better error
+        return HttpResponseRedirect(reverse('main-list_experiments'))
+    # Participant
+    appointments = participant.appointment_set.all()
     return render_to_response('main/appointments.html',
-                              {'appointments': appointments,
-                               'is_participant': is_participant},
+                              {'appointments': appointments},
                               RequestContext(request))
 
 def sign_up_for_appointment_start(request, id):

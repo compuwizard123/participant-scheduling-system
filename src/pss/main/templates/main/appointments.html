@@ -3,42 +3,38 @@
 {% block title %}{% block description %}Appointments{% endblock %}{% endblock %}
 
 {% block jquery %}
-{% if is_participant %}
-    $("a.cancel").button({
-        icons: {
-            primary: "ui-icon-cancel"
-        }
-    }).click(function() {
-        var the_button = $(this);
-        $("<div><p>Are you sure that you want to cancel this appointment?</p></div>").dialog({
-            modal: true,
-            buttons: {
-                "Yes": function() {
-                    var the_dialog = $(this);
-                    $.post(
-                        the_button.attr("href"),
-                        function(response) {
-                            the_dialog.find("p").html(response);
-                            the_dialog.dialog("option", "buttons", {});
-                            the_button.button("option", "disabled", true);
-                            the_button.parent("td").siblings("td").eq(-1).html("yes");
-                        }
-                    );
-                },
-                "No": function() {
-                    $(this).dialog("close");
-                }
+$("a.cancel").button({
+    icons: {
+        primary: "ui-icon-cancel"
+    }
+}).click(function() {
+    var the_button = $(this);
+    $("<div><p>Are you sure that you want to cancel this appointment?</p></div>").dialog({
+        modal: true,
+        buttons: {
+            "Yes": function() {
+                var the_dialog = $(this);
+                $.post(
+                    the_button.attr("href"),
+                    function(response) {
+                        the_dialog.find("p").html(response);
+                        the_dialog.dialog("option", "buttons", {});
+                        the_button.button("option", "disabled", true);
+                        the_button.parent("td").siblings("td").eq(-1).html("yes");
+                    }
+                );
             },
-            close: function(event, ui) {
-                        $(this).remove();
-                   }
-        });
-        return false;
+            "No": function() {
+                $(this).dialog("close");
+            }
+        },
+        close: function(event, ui) {
+                    $(this).remove();
+               }
     });
-    $("a.disabled").button("option", "disabled", true);
-{% else %}
-    {# to-do #}
-{% endif %}
+    return false;
+});
+$("a.disabled").button("option", "disabled", true);
 $("a.back").button({
     icons: {
         primary: "ui-icon-arrowthick-1-w"
@@ -68,11 +64,7 @@ $("table.datatable").dataTable({
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Is Cancelled?</th>
-                {% if is_participant %}
-                    <th>Cancel</th>
-                {% else %}
-                    {# to-do #}
-                {% endif %}
+                <th>Cancel</th>
             </tr>
         </thead>
         <tbody>
@@ -84,11 +76,7 @@ $("table.datatable").dataTable({
                     <td>{{ appointment.slot.start_time }}</td>
                     <td>{{ appointment.slot.end_time }}</td>
                     <td>{{ appointment.is_cancelled|yesno }}</td>
-                    {% if is_participant %}
-                        <td><a href="{% url main-cancel_appointment appointment.id %}" class="cancel{% if appointment.is_cancelled %} disabled{% endif %}">Cancel</a></td>
-                    {% else %}
-                        {# to-do #}
-                    {% endif %}
+                    <td><a href="{% url main-cancel_appointment appointment.id %}" class="cancel{% if appointment.is_cancelled %} disabled{% endif %}">Cancel</a></td>
                 </tr>
             {% endfor %}
         </tbody>
