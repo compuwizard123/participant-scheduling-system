@@ -1,11 +1,17 @@
+try:
+    import json
+except ImportError:
+    import simplejson as json
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.template.defaultfilters import date, time
 
-from pss.main.forms import AppointmentForm, ExperimentForm, ExperimentDateForm, ExperimentDateTimeRangeForm, UserForm, ParticipantForm, ResearcherForm
+from pss.main.forms import ExperimentForm, ExperimentDateForm, ExperimentDateTimeRangeForm, UserForm, ParticipantForm, ResearcherForm
 from pss.main.models import Appointment, Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Researcher, Slot
 
 def index(request):
@@ -223,43 +229,56 @@ def appointments_view(request):
                                'is_participant': is_participant},
                               RequestContext(request))
 
-@login_required
-def appointment_view(request, experiment_id=None, appointment_id=None):
+def sign_up_for_appointment_start(request, id):
+    """
+    An AJAX view
+    """
+    if not request.is_ajax():
+        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        return HttpResponseRedirect(reverse('main-index'))
+    if request.user.is_anonymous():
+        return HttpResponse(json.dumps({'is_error': True, 'error': 'Anonymous user'})) # to-do: Better error
     try:
         participant = request.user.participant
     except Participant.DoesNotExist:
-        # to-do
+        return HttpResponse(json.dumps({'is_error': True, 'error': 'No profile'})) # to-do: Better error
+    try:
+        experiment = Experiment.objects.get(id=id)
+    except Experiment.DoesNotExist:
+        return HttpResponse(json.dumps({'is_error': True, 'error': 'Invalid ID'})) # to-do: Better error
+    slots = []
+    for slot in Slot.objects.filter(experiment_date_time_range__experiment_date__experiment=experiment):
+        label = '%s: %s - %s' % (date(slot.experiment_date_time_range.experiment_date.date),
+                                 time(slot.start_time),
+                                 time(slot.end_time))
+        url = reverse('main-sign_up_for_appointment_finish', args=[slot.id])
+        is_disabled = False # to-do
+        slots.append({'label': label, 'url': url, 'is_disabled': is_disabled})
+    return HttpResponse(json.dumps({'is_error': False, 'slots': slots}))
+
+def sign_up_for_appointment_finish(request, id):
+    """
+    An AJAX view
+    """
+    if not request.is_ajax():
         messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
         return HttpResponseRedirect(reverse('main-index'))
-    if experiment_id is not None:
-        experiment_instance = get_object_or_404(Experiment, id=experiment_id)
-        appointment_instance = None
-        action = 'Create'
-    else: # if appointment_id is not None:
-        appointment_instance = get_object_or_404(Appointment, id=appointment_id, participant=participant)
-        experiment_instance = appointment_instance.slot.experiment_date_time_range.experiment_date.experiment
-        action = 'Edit'
-    if request.method == 'POST':
-        # to-do
-        #if instance is not None and 'delete' in request.POST:
-        #    instance.delete()
-        #    messages.add_message(request, messages.SUCCESS, 'The appointment was successfully deleted.')
-        #    return HttpResponseRedirect(reverse('main-list_appointments'))
-        form = AppointmentForm(experiment_instance, request.POST, instance=appointment_instance)
-        if form.is_valid():
-            appointment = form.save(commit=False)
-            appointment.participant = participant
-            appointment.save()
-            messages.add_message(request, messages.SUCCESS, 'The appointment was successfully saved.')
-            return HttpResponseRedirect(reverse('main-list_appointments'))
+    if request.user.is_anonymous():
+        return HttpResponse('Anonymous user') # to-do: Better error
+    try:
+        participant = request.user.participant
+    except Participant.DoesNotExist:
+        return HttpResponse('No profile') # to-do: Better error
+    try:
+        slot = Slot.objects.get(id=id)
+    except Slot.DoesNotExist:
+        return HttpResponse('Invalid ID') # to-do: Better error
+    # to-do: Validate slot.
+    appointment, created = participant.appointment_set.get_or_create(slot=slot)
+    if created:
+        return HttpResponse('The appointment was successfully created.')
     else:
-        form = AppointmentForm(experiment_instance, instance=appointment_instance)
-    return render_to_response('main/appointment.html',
-                              {'appointment_instance': appointment_instance,
-                               'experiment_instance': experiment_instance,
-                               'action': action,
-                               'form': form},
-                              RequestContext(request))
+        return HttpResponse('The appointment is already created.')
 
 def cancel_appointment(request, id):
     """

@@ -28,7 +28,10 @@
                 "No": function() {
                     $(this).dialog("close");
                 }
-            }
+            },
+            close: function(event, ui) {
+                        $(this).remove();
+                   }
         });
         return false;
     });

@@ -24,7 +24,72 @@
         icons: {
             primary: "ui-icon-check"
         }
+    }).click(function() {
+        var the_button = $(this);
+        $.post(
+            the_button.attr("href"),
+            function(response) {
+                var the_dialog = $("<div></div>").dialog({
+                    modal: true,
+                    close: function(event, ui) {
+                        $(this).remove();
+                    }
+                });
+                if (response.is_error) {
+                    the_dialog.html("<p>" + response.error + "</p>");
+                } else {
+                    if (response.slots.length > 0) {
+                        var ul = $("<ul></ul>");
+                        $.each(response.slots, function(i, slot) {
+                            var li = $("<li></li>");
+                            var label = $("<label></label>");
+                            label.attr("for", "slot_" + i);
+                            label.html(slot.label);
+                            var input = $("<input />");
+                            input.attr("value", slot.url);
+                            input.attr("type", "radio");
+                            input.attr("name", "slot");
+                            input.attr("id", "slot_" + i);
+                            if (slot.is_disabled) {
+                                input.attr("disabled", "disabled");
+                            }
+                            label.prepend(input);
+                            li.append(label);
+                            ul.append(li);
+                        });
+                        the_dialog.append(ul);
+                        the_dialog.dialog("option", "buttons", {
+                            "Save": function() {
+                                var url = the_dialog.find("input[type=radio]:checked").val();
+                                if (url) {
+                                    $.post(
+                                        url,
+                                        function(response) {
+                                            the_dialog.html("<p>" + response + "</p>");
+                                            the_dialog.dialog("option", "buttons", {});
+                                            the_button.button("option", "disabled", true);
+                                        }
+                                    )
+                                } else if (the_dialog.find("p").length == 0) {
+                                    var p = $("<p></p>");
+                                    p.html("This field is required."); // to-do: Better error
+                                    the_dialog.prepend(p);
+                                }
+                            },
+                            "Cancel": function() {
+                                the_dialog.dialog("close");
+                            }
+                        });
+                    } else {
+                        the_dialog.html("<p>There are no slots, yet.</p>"); // to-do: Better error
+                    }
+                }
+            },
+            "json"
+        );
+        return false;
     });
+    $("a.disabled").button("option", "disabled", true);
 {% endif %}
 $("a.back").button({
     icons: {
@@ -71,7 +136,8 @@ $("a.back").button({
                         <td><a href="{% url main-edit_experiment experiment.id %}" class="edit">Edit</a></td>
                         <td><a href="{% url main-list_experiment_dates experiment.id %}" class="experiment_dates">Experiment Dates</a></td>
                     {% else %}
-                        <td><a href="{% url main-sign_up_for_appointment experiment.id %}" class="sign_up">Sign Up</a></td>
+                        <td><a href="{% url main-sign_up_for_appointment_start experiment.id %}" class="sign_up{% if not experiment %} disabled{% endif %}">Sign Up</a></td>
+                        <!-- to-do: Fix the disabled logic. -->
                     {% endif %}
                 </tr>
             {% endfor %}
