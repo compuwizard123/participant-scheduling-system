@@ -135,7 +135,15 @@ $("table.datatable").dataTable({
         <tbody>
             {% for experiment in experiments %}
                 <tr>
-                    <td>{{ experiment.name }}</td>
+                    <td>
+                        {% if is_researcher %}
+                            <a href="{% url main-list_participants experiment.id %}">
+                        {% endif %}
+                        {{ experiment.name }}
+                        {% if is_researcher %}
+                            </a>
+                        {% endif %}
+                    </td>
                     <td>{{ experiment.description }}</td>
                     <td>{{ experiment.researchers.all|join:", " }}</td>
                     <td>{{ experiment.room }}</td>

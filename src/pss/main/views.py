@@ -243,6 +243,20 @@ def appointments_view(request):
                               {'appointments': appointments},
                               RequestContext(request))
 
+@login_required
+def participants_view(request, id):
+    try:
+        researcher = request.user.researcher
+    except Researcher.DoesNotExist:
+        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        return HttpResponseRedirect(reverse('main-index'))
+    experiment = get_object_or_404(Experiment, id=id, researchers=researcher)
+    appointments = Appointment.objects.filter(slot__experiment_date_time_range__experiment_date__experiment=experiment)
+    return render_to_response('main/participants.html',
+                              {'experiment': experiment,
+                               'appointments': appointments},
+                              RequestContext(request))
+
 def sign_up_for_appointment_start(request, id):
     """
     An AJAX view
