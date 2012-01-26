@@ -96,6 +96,11 @@ $("a.back").button({
         primary: "ui-icon-arrowthick-1-w"
     }
 });
+
+$('.datatables').dataTable({
+    "bJQueryUI": true,
+    "sPaginationType": "full_numbers"
+});
 {% endblock %}
 
 {% block content %}
@@ -104,7 +109,7 @@ $("a.back").button({
     {% if is_researcher %}
         <p><a href="{% url main-create_experiment %}" class="create">Create a new experiment</a></p>
     {% endif %}
-    <table class="pretty">
+    <table class="pretty datatables">
         <thead>
             <tr>
                 <th>Name</th>
