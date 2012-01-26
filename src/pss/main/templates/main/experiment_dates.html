@@ -23,6 +23,16 @@ $("a.back").button({
         primary: "ui-icon-arrowthick-1-w"
     }
 });
+$("table.datatable").dataTable({
+    "aoColumnDefs": [
+        {
+            "bSortable": false,
+            "aTargets": [-2, -1]
+        }
+    ],
+    "bJQueryUI": true,
+    "sPaginationType": "full_numbers"
+});
 {% endblock %}
 
 {% block content %}
@@ -30,7 +40,7 @@ $("a.back").button({
 {% with experiment.experimentdate_set.all as experiment_dates %}
     {% if experiment_dates %}
         <p><a href="{% url main-create_experiment_date experiment.id %}" class="create">Create a new experiment date for {{ experiment }}</a></p>
-        <table class="pretty">
+        <table class="pretty datatable">
             <thead>
                 <tr>
                     <th>Date</th>

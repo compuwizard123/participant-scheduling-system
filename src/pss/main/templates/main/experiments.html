@@ -96,8 +96,13 @@ $("a.back").button({
         primary: "ui-icon-arrowthick-1-w"
     }
 });
-
-$('.datatables').dataTable({
+$("table.datatable").dataTable({
+    "aoColumnDefs": [
+        {
+            "bSortable": false,
+            "aTargets": [{% if is_researcher %}-2, {% endif %}-1]
+        }
+    ],
     "bJQueryUI": true,
     "sPaginationType": "full_numbers"
 });
@@ -109,7 +114,7 @@ $('.datatables').dataTable({
     {% if is_researcher %}
         <p><a href="{% url main-create_experiment %}" class="create">Create a new experiment</a></p>
     {% endif %}
-    <table class="pretty datatables">
+    <table class="pretty datatable">
         <thead>
             <tr>
                 <th>Name</th>

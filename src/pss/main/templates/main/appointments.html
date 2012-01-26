@@ -44,12 +44,22 @@ $("a.back").button({
         primary: "ui-icon-arrowthick-1-w"
     }
 });
+$("table.datatable").dataTable({
+    "aoColumnDefs": [
+        {
+            "bSortable": false,
+            "aTargets": [-1]
+        }
+    ],
+    "bJQueryUI": true,
+    "sPaginationType": "full_numbers"
+});
 {% endblock %}
 
 {% block content %}
 <h1>Appointments</h1>
 {% if appointments %}
-    <table class="pretty">
+    <table class="pretty datatable">
         <thead>
             <tr>
                 <th>Participant</th>

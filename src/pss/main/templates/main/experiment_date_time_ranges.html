@@ -18,6 +18,16 @@ $("a.back").button({
         primary: "ui-icon-arrowthick-1-w"
     }
 });
+$("table.datatable").dataTable({
+    "aoColumnDefs": [
+        {
+            "bSortable": false,
+            "aTargets": [-1]
+        }
+    ],
+    "bJQueryUI": true,
+    "sPaginationType": "full_numbers"
+});
 {% endblock %}
 
 {% block content %}
@@ -25,7 +35,7 @@ $("a.back").button({
 {% with experiment_date.experimentdatetimerange_set.all as experiment_date_time_ranges %}
     {% if experiment_date_time_ranges %}
         <p><a href="{% url main-create_experiment_date_time_range experiment_date.id %}" class="create">Create a new experiment date time range for {{ experiment_date }}</a></p>
-        <table class="pretty">
+        <table class="pretty datatable">
             <thead>
                 <tr>
                     <th>Start Time</th>
