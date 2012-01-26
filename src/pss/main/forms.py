@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django import forms
 from django.contrib.auth.models import User
 
-from pss.main.models import Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Researcher, Slot
+from pss.main.models import Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Researcher
 
 class ExperimentForm(forms.ModelForm):
     # to-do: Be able to create qualifications and rooms.
