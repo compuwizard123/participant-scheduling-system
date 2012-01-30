@@ -11,6 +11,10 @@ $("a.back").button({
 $("table.datatable").dataTable({
     "bJQueryUI": true,
     "sPaginationType": "full_numbers"
+    "sDom": 'T<"clear">lfrtip',
+    "oTableTools": {
+	"sSwfPath": "/static/copy_cvs_xls_pdf.swf"
+    }
 });
 {% endblock %}
 
