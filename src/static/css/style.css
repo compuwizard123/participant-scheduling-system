@@ -9,6 +9,9 @@ body {
     font-size : 12px;
     text-align : center;
 }
+div.dataTables_filter, div.dataTables_length, div.DTTT_container {
+    width : 33%;
+}
 strong {
     font-weight : bold;
 }
