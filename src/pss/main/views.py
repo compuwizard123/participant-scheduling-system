@@ -3,8 +3,11 @@ try:
 except ImportError:
     import simplejson as json
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.models import Site
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -13,6 +16,13 @@ from django.template.defaultfilters import date, time
 
 from pss.main.forms import ExperimentForm, ExperimentDateForm, ExperimentDateTimeRangeForm, UserForm, ParticipantForm, ResearcherForm
 from pss.main.models import Appointment, Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Researcher, Slot
+
+def my_send_mail(*args):
+    if settings.DEBUG or True: # to-do: Remove "or True" for production.
+        _ = ',\n'.join([' ' * 4 + repr(arg) for arg in args])
+        print 'send_mail(\n%s,\n    fail_silently=True\n)' % _
+    else:
+        send_mail(fail_silently=True, *args)
 
 def index(request):
     return render_to_response('main/index.html',
@@ -304,6 +314,19 @@ def sign_up_for_appointment_finish(request, id):
     # to-do: Validate slot.
     appointment, created = participant.appointment_set.get_or_create(slot=slot)
     if created:
+        experiment = appointment.slot.experiment_date_time_range.experiment_date.experiment
+        site = Site.objects.get_current()
+        from_email = settings.DEFAULT_FROM_EMAIL
+        subject = '[%s] New Appointment: %s' % (site.name, experiment)
+        message = 'http://' + site.domain + \
+                  reverse('main-list_appointments')
+        recipient_list = [participant.user.email]
+        my_send_mail(subject, message, from_email, recipient_list)
+        subject = '[%s] New Appointment: %s' % (site.name, participant)
+        message = 'http://' + site.domain + \
+                  reverse('main-list_participants', args=[experiment.id])
+        recipient_list = [researcher.user.email for researcher in experiment.researchers.all()]
+        my_send_mail(subject, message, from_email, recipient_list)
         return HttpResponse('The appointment was successfully created.')
     else:
         return HttpResponse('The appointment is already created.')
@@ -329,4 +352,17 @@ def cancel_appointment(request, id):
         return HttpResponse('The appointment is already cancelled.')
     appointment.is_cancelled = True
     appointment.save()
+    experiment = appointment.slot.experiment_date_time_range.experiment_date.experiment
+    site = Site.objects.get_current()
+    from_email = settings.DEFAULT_FROM_EMAIL
+    subject = '[%s] Cancelled Appointment: %s' % (site.name, experiment)
+    message = 'http://' + site.domain + \
+              reverse('main-list_appointments')
+    recipient_list = [participant.user.email]
+    my_send_mail(subject, message, from_email, recipient_list)
+    subject = '[%s] Cancelled Appointment: %s' % (site.name, participant)
+    message = 'http://' + site.domain + \
+              reverse('main-list_participants', args=[experiment.id])
+    recipient_list = [researcher.user.email for researcher in experiment.researchers.all()]
+    my_send_mail(subject, message, from_email, recipient_list)
     return HttpResponse('The appointment was successfully cancelled.')
