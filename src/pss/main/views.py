@@ -38,7 +38,7 @@ def experiments_view(request):
             user.participant
         except Participant.DoesNotExist:
             # No profile
-            messages.add_message(request, messages.ERROR, 'Please create a profile first.') # to-do: Better error
+            messages.add_message(request, messages.ERROR, 'Please create a profile first.')
             return HttpResponseRedirect(reverse('main-profile'))
         # Participant
         is_researcher = False
@@ -57,7 +57,7 @@ def experiment_view(request, id=None):
     try:
         researcher = request.user.researcher
     except Researcher.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        messages.add_message(request, messages.ERROR, 'Permission denied')
         return HttpResponseRedirect(reverse('main-index'))
     if id is None:
         instance = None
@@ -96,7 +96,7 @@ def experiment_dates_view(request, experiment_id):
     try:
         researcher = request.user.researcher
     except Researcher.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        messages.add_message(request, messages.ERROR, 'Permission denied')
         return HttpResponseRedirect(reverse('main-index'))
     experiment = get_object_or_404(Experiment, id=experiment_id, researchers=researcher)
     return render_to_response('main/experiment_dates.html',
@@ -108,7 +108,7 @@ def experiment_date_view(request, experiment_id=None, experiment_date_id=None):
     try:
         researcher = request.user.researcher
     except Researcher.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        messages.add_message(request, messages.ERROR, 'Permission denied')
         return HttpResponseRedirect(reverse('main-index'))
     if experiment_id is not None:
         instance = None
@@ -144,7 +144,7 @@ def experiment_date_time_ranges_view(request, experiment_date_id):
     try:
         researcher = request.user.researcher
     except Researcher.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        messages.add_message(request, messages.ERROR, 'Permission denied')
         return HttpResponseRedirect(reverse('main-index'))
     experiment_date = get_object_or_404(ExperimentDate, id=experiment_date_id, experiment__researchers=researcher)
     return render_to_response('main/experiment_date_time_ranges.html',
@@ -156,7 +156,7 @@ def experiment_date_time_range_view(request, experiment_date_id=None, experiment
     try:
         researcher = request.user.researcher
     except Researcher.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        messages.add_message(request, messages.ERROR, 'Permission denied')
         return HttpResponseRedirect(reverse('main-index'))
     if experiment_date_id is not None:
         instance = None
@@ -242,10 +242,10 @@ def appointments_view(request):
             user.researcher
         except Researcher.DoesNotExist:
             # No profile
-            messages.add_message(request, messages.ERROR, 'Please create a profile first.') # to-do: Better error
+            messages.add_message(request, messages.ERROR, 'Please create a profile first.')
             return HttpResponseRedirect(reverse('main-profile'))
         # Researcher
-        messages.add_message(request, messages.ERROR, 'Please select an experiment.') # to-do: Better error
+        messages.add_message(request, messages.ERROR, 'Please select an experiment.')
         return HttpResponseRedirect(reverse('main-list_experiments'))
     # Participant
     appointments = participant.appointment_set.all()
@@ -258,7 +258,7 @@ def participants_view(request, id):
     try:
         researcher = request.user.researcher
     except Researcher.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        messages.add_message(request, messages.ERROR, 'Permission denied')
         return HttpResponseRedirect(reverse('main-index'))
     experiment = get_object_or_404(Experiment, id=id, researchers=researcher)
     appointments = Appointment.objects.filter(slot__experiment_date_time_range__experiment_date__experiment=experiment)
@@ -272,18 +272,18 @@ def sign_up_for_appointment_start(request, id):
     An AJAX view
     """
     if not request.is_ajax():
-        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        messages.add_message(request, messages.ERROR, 'Permission denied')
         return HttpResponseRedirect(reverse('main-index'))
     if request.user.is_anonymous():
-        return HttpResponse(json.dumps({'is_error': True, 'error': 'Anonymous user'})) # to-do: Better error
+        return HttpResponse(json.dumps({'is_error': True, 'error': 'Anonymous user'}))
     try:
         participant = request.user.participant
     except Participant.DoesNotExist:
-        return HttpResponse(json.dumps({'is_error': True, 'error': 'No profile'})) # to-do: Better error
+        return HttpResponse(json.dumps({'is_error': True, 'error': 'No profile'}))
     try:
         experiment = Experiment.objects.get(id=id)
     except Experiment.DoesNotExist:
-        return HttpResponse(json.dumps({'is_error': True, 'error': 'Invalid ID'})) # to-do: Better error
+        return HttpResponse(json.dumps({'is_error': True, 'error': 'Invalid ID'}))
     slots = []
     for slot in Slot.objects.filter(experiment_date_time_range__experiment_date__experiment=experiment):
         label = '%s: %s - %s' % (date(slot.experiment_date_time_range.experiment_date.date),
@@ -299,18 +299,18 @@ def sign_up_for_appointment_finish(request, id):
     An AJAX view
     """
     if not request.is_ajax():
-        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        messages.add_message(request, messages.ERROR, 'Permission denied')
         return HttpResponseRedirect(reverse('main-index'))
     if request.user.is_anonymous():
-        return HttpResponse('Anonymous user') # to-do: Better error
+        return HttpResponse('Anonymous user')
     try:
         participant = request.user.participant
     except Participant.DoesNotExist:
-        return HttpResponse('No profile') # to-do: Better error
+        return HttpResponse('No profile')
     try:
         slot = Slot.objects.get(id=id)
     except Slot.DoesNotExist:
-        return HttpResponse('Invalid ID') # to-do: Better error
+        return HttpResponse('Invalid ID')
     # to-do: Validate slot.
     appointment, created = participant.appointment_set.get_or_create(slot=slot)
     if created:
@@ -336,18 +336,18 @@ def cancel_appointment(request, id):
     An AJAX view
     """
     if not request.is_ajax():
-        messages.add_message(request, messages.ERROR, 'Permission denied') # to-do: Better error
+        messages.add_message(request, messages.ERROR, 'Permission denied')
         return HttpResponseRedirect(reverse('main-index'))
     if request.user.is_anonymous():
-        return HttpResponse('Anonymous user') # to-do: Better error
+        return HttpResponse('Anonymous user')
     try:
         participant = request.user.participant
     except Participant.DoesNotExist:
-        return HttpResponse('No profile') # to-do: Better error
+        return HttpResponse('No profile')
     try:
         appointment = participant.appointment_set.get(id=id)
     except Appointment.DoesNotExist:
-        return HttpResponse('Invalid ID') # to-do: Better error
+        return HttpResponse('Invalid ID')
     if appointment.is_cancelled:
         return HttpResponse('The appointment is already cancelled.')
     appointment.is_cancelled = True

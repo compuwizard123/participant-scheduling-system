@@ -72,7 +72,7 @@
                                     )
                                 } else if (the_dialog.find("p").length == 0) {
                                     var p = $("<p></p>");
-                                    p.html("This field is required."); // to-do: Better error
+                                    p.html("This field is required.");
                                     the_dialog.prepend(p);
                                 }
                             },
@@ -81,7 +81,7 @@
                             }
                         });
                     } else {
-                        the_dialog.html("<p>There are no slots, yet.</p>"); // to-do: Better error
+                        the_dialog.html("<p>There are no slots, yet.</p>");
                     }
                 }
             },
