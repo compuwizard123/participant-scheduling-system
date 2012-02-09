@@ -1,0 +1,12 @@
+Participant: {{ participant }}
+Email Address: {{ participant.user.email }}
+Phone Number: {{ participant.phone_number }}
+
+Experiment: {{ experiment }}
+Room: {{ experiment.room }}
+Date: {{ appointment.slot.experiment_date_time_range.experiment_date.date }}
+Start Time: {{ appointment.slot.start_time }}
+End Time: {{ appointment.slot.end_time }}
+Is Cancelled?: {{ appointment.is_cancelled|yesno }}
+
+http://{{ site.domain }}{% url main-list_participants experiment.id %}

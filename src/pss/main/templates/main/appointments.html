@@ -1,6 +1,6 @@
 {% extends "main/base.html" %}
 
-{% block title %}{% block description %}Appointments{% endblock %}{% endblock %}
+{% block title %}{% block description %}Appointments for {{ appointment.participant }}{% endblock %}{% endblock %}
 
 {% block jquery %}
 $("a.cancel").button({
@@ -58,8 +58,7 @@ $("table.datatable").dataTable({
     <table class="pretty datatable">
         <thead>
             <tr>
-                <th>Participant</th>
-                <th>Name</th>
+                <th>Experiment</th>
                 <th>Date</th>
                 <th>Start Time</th>
                 <th>End Time</th>
@@ -70,8 +69,7 @@ $("table.datatable").dataTable({
         <tbody>
             {% for appointment in appointments %}
                 <tr>
-                    <td>{{ appointment.participant }}</td>
-                    <td>{{ appointment.slot.experiment_date_time_range.experiment_date.experiment.name }}</td>
+                    <td>{{ appointment.slot.experiment_date_time_range.experiment_date.experiment }}</td>
                     <td>{{ appointment.slot.experiment_date_time_range.experiment_date.date }}</td>
                     <td>{{ appointment.slot.start_time }}</td>
                     <td>{{ appointment.slot.end_time }}</td>

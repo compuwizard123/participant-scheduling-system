@@ -13,6 +13,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.template.defaultfilters import date, time
+from django.template.loader import render_to_string
 
 from pss.main.forms import ExperimentForm, ExperimentDateForm, ExperimentDateTimeRangeForm, UserForm, ParticipantForm, ResearcherForm
 from pss.main.models import Appointment, Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Researcher, Slot
@@ -317,16 +318,23 @@ def sign_up_for_appointment_finish(request, id):
         experiment = appointment.slot.experiment_date_time_range.experiment_date.experiment
         site = Site.objects.get_current()
         from_email = settings.DEFAULT_FROM_EMAIL
-        subject = '[%s] New Appointment: %s' % (site.name, experiment)
-        message = 'http://' + site.domain + \
-                  reverse('main-list_appointments')
-        recipient_list = [participant.user.email]
-        my_send_mail(subject, message, from_email, recipient_list)
-        subject = '[%s] New Appointment: %s' % (site.name, participant)
-        message = 'http://' + site.domain + \
-                  reverse('main-list_participants', args=[experiment.id])
-        recipient_list = [researcher.user.email for researcher in experiment.researchers.all()]
-        my_send_mail(subject, message, from_email, recipient_list)
+        subject = '[%s] New Appointment: %%s' % site.name
+
+        participant_subject = subject % experiment
+        participant_message = render_to_string('main/participant_email.txt', {'appointment': appointment,
+                                                                              'experiment': experiment,
+                                                                              'site': site})
+        participant_recipient_list = [participant.user.email]
+        my_send_mail(participant_subject, participant_message, from_email, participant_recipient_list)
+
+        researcher_subject = subject % participant
+        researcher_message = render_to_string('main/researcher_email.txt', {'appointment': appointment,
+                                                                            'experiment': experiment,
+                                                                            'participant': participant,
+                                                                            'site': site})
+        researcher_recipient_list = [researcher.user.email for researcher in experiment.researchers.all()]
+        my_send_mail(researcher_subject, researcher_message, from_email, researcher_recipient_list)
+
         return HttpResponse('The appointment was successfully created.')
     else:
         return HttpResponse('The appointment is already created.')
@@ -355,14 +363,21 @@ def cancel_appointment(request, id):
     experiment = appointment.slot.experiment_date_time_range.experiment_date.experiment
     site = Site.objects.get_current()
     from_email = settings.DEFAULT_FROM_EMAIL
-    subject = '[%s] Cancelled Appointment: %s' % (site.name, experiment)
-    message = 'http://' + site.domain + \
-              reverse('main-list_appointments')
-    recipient_list = [participant.user.email]
-    my_send_mail(subject, message, from_email, recipient_list)
-    subject = '[%s] Cancelled Appointment: %s' % (site.name, participant)
-    message = 'http://' + site.domain + \
-              reverse('main-list_participants', args=[experiment.id])
-    recipient_list = [researcher.user.email for researcher in experiment.researchers.all()]
-    my_send_mail(subject, message, from_email, recipient_list)
+    subject = '[%s] Cancelled Appointment: %%s' % site.name
+
+    participant_subject = subject % experiment
+    participant_message = render_to_string('main/participant_email.txt', {'appointment': appointment,
+                                                                          'experiment': experiment,
+                                                                          'site': site})
+    participant_recipient_list = [participant.user.email]
+    my_send_mail(participant_subject, participant_message, from_email, participant_recipient_list)
+
+    researcher_subject = subject % participant
+    researcher_message = render_to_string('main/researcher_email.txt', {'appointment': appointment,
+                                                                        'experiment': experiment,
+                                                                        'participant': participant,
+                                                                        'site': site})
+    researcher_recipient_list = [researcher.user.email for researcher in experiment.researchers.all()]
+    my_send_mail(researcher_subject, researcher_message, from_email, researcher_recipient_list)
+
     return HttpResponse('The appointment was successfully cancelled.')

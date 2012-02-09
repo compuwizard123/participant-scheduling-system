@@ -1,0 +1,12 @@
+Experiment: {{ experiment }}
+Room: {{ experiment.room }}
+Date: {{ appointment.slot.experiment_date_time_range.experiment_date.date }}
+Start Time: {{ appointment.slot.start_time }}
+End Time: {{ appointment.slot.end_time }}
+Is Cancelled?: {{ appointment.is_cancelled|yesno }}
+{% for researcher in experiment.researchers.all %}
+Researcher: {{ researcher }}
+Email Address: {{ researcher.user.email }}
+Phone Number: {{ researcher.phone_number }}
+{% endfor %}
+http://{{ site.domain }}{% url main-list_appointments %}
