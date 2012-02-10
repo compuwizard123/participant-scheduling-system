@@ -85,6 +85,10 @@ class Experiment(models.Model):
     def __unicode__(self):
         return self.name
 
+    def already_signed_up(self, participant):
+        return Appointment.objects.filter(slot__experiment_date_time_range__experiment_date__experiment=self,
+                                          participant=participant).count() > 0
+
 class ExperimentDate(models.Model):
     experiment = models.ForeignKey(Experiment)
     date = models.DateField(help_text='yyyy-mm-dd')
@@ -134,6 +138,16 @@ class Slot(models.Model):
             return
         self.end_time = end_datetime.time()
         super(Slot, self).save(*args, **kwargs)
+
+    def is_full(self):
+        return self.appointment_set.exclude(is_cancelled=True).count() == \
+               self.experiment_date_time_range.experiment_date.experiment.number_of_participants_needed
+
+    def is_conflicting_for(self, participant):
+        return Slot.objects.filter(appointment__participant=participant,
+                                   experiment_date_time_range__experiment_date__date=self.experiment_date_time_range.experiment_date.date,
+                                   start_time__lt=self.end_time,
+                                   end_time__gt=self.start_time).exclude(appointment__is_cancelled=True).count() > 0
 
 class Appointment(models.Model):
     participant = models.ForeignKey(Participant)

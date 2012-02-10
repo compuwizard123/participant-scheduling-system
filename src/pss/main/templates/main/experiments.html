@@ -1,5 +1,7 @@
 {% extends "main/base.html" %}
 
+{% load main_templatetags %}
+
 {% block title %}{% block description %}Experiments{% endblock %}{% endblock %}
 
 {% block jquery %}
@@ -154,8 +156,7 @@ $("table.datatable").dataTable({
                         <td><a href="{% url main-edit_experiment experiment.id %}" class="edit">Edit</a></td>
                         <td><a href="{% url main-list_experiment_dates experiment.id %}" class="experiment_dates">Experiment Dates</a></td>
                     {% else %}
-                        <td><a href="{% url main-sign_up_for_appointment_start experiment.id %}" class="sign_up{% if not experiment %} disabled{% endif %}">Sign Up</a></td>
-                        <!-- to-do: Fix the disabled logic. -->
+                        <td><a href="{% url main-sign_up_for_appointment_start experiment.id %}" class="sign_up{% if experiment|already_signed_up:participant %} disabled{% endif %}">Sign Up</a></td>
                     {% endif %}
                 </tr>
             {% endfor %}

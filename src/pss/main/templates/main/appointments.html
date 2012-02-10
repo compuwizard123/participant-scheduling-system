@@ -1,6 +1,6 @@
 {% extends "main/base.html" %}
 
-{% block title %}{% block description %}Appointments for {{ appointment.participant }}{% endblock %}{% endblock %}
+{% block title %}{% block description %}Appointments for {{ participant }}{% endblock %}{% endblock %}
 
 {% block jquery %}
 $("a.cancel").button({
@@ -53,7 +53,7 @@ $("table.datatable").dataTable({
 {% endblock %}
 
 {% block content %}
-<h1>Appointments</h1>
+<h1>Appointments for {{ participant }}</h1>
 {% if appointments %}
     <table class="pretty datatable">
         <thead>

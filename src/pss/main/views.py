@@ -36,7 +36,7 @@ def experiments_view(request):
         researcher = user.researcher
     except Researcher.DoesNotExist:
         try:
-            user.participant
+            participant = user.participant
         except Participant.DoesNotExist:
             # No profile
             messages.add_message(request, messages.ERROR, 'Please create a profile first.')
@@ -48,9 +48,11 @@ def experiments_view(request):
         # Researcher
         is_researcher = True
         experiments = researcher.experiment_set.all()
+        participant = None
     return render_to_response('main/experiments.html',
                               {'experiments': experiments,
-                               'is_researcher': is_researcher},
+                               'is_researcher': is_researcher,
+                               'participant': participant},
                               RequestContext(request))
 
 @login_required
@@ -251,7 +253,8 @@ def appointments_view(request):
     # Participant
     appointments = participant.appointment_set.all()
     return render_to_response('main/appointments.html',
-                              {'appointments': appointments},
+                              {'appointments': appointments,
+                               'participant': participant},
                               RequestContext(request))
 
 @login_required
@@ -285,13 +288,15 @@ def sign_up_for_appointment_start(request, id):
         experiment = Experiment.objects.get(id=id)
     except Experiment.DoesNotExist:
         return HttpResponse(json.dumps({'is_error': True, 'error': 'Invalid ID'}))
+    if experiment.already_signed_up(participant):
+        return HttpResponse(json.dumps({'is_error': True, 'error': 'Already signed up'}))
     slots = []
     for slot in Slot.objects.filter(experiment_date_time_range__experiment_date__experiment=experiment):
         label = '%s: %s - %s' % (date(slot.experiment_date_time_range.experiment_date.date),
                                  time(slot.start_time),
                                  time(slot.end_time))
         url = reverse('main-sign_up_for_appointment_finish', args=[slot.id])
-        is_disabled = False # to-do
+        is_disabled = slot.is_full() or slot.is_conflicting_for(participant)
         slots.append({'label': label, 'url': url, 'is_disabled': is_disabled})
     return HttpResponse(json.dumps({'is_error': False, 'slots': slots}))
 
@@ -312,32 +317,34 @@ def sign_up_for_appointment_finish(request, id):
         slot = Slot.objects.get(id=id)
     except Slot.DoesNotExist:
         return HttpResponse('Invalid ID')
-    # to-do: Validate slot.
-    appointment, created = participant.appointment_set.get_or_create(slot=slot)
-    if created:
-        experiment = appointment.slot.experiment_date_time_range.experiment_date.experiment
-        site = Site.objects.get_current()
-        from_email = settings.DEFAULT_FROM_EMAIL
-        subject = '[%s] New Appointment: %%s' % site.name
+    experiment = slot.experiment_date_time_range.experiment_date.experiment
+    if experiment.already_signed_up(participant):
+        return HttpResponse('Already signed up')
+    if slot.is_full():
+        return HttpResponse('Full')
+    if slot.is_conflicting_for(participant):
+        return HttpResponse('Conflicting')
+    appointment = participant.appointment_set.create(slot=slot)
+    site = Site.objects.get_current()
+    from_email = settings.DEFAULT_FROM_EMAIL
+    subject = '[%s] New Appointment: %%s' % site.name
 
-        participant_subject = subject % experiment
-        participant_message = render_to_string('main/participant_email.txt', {'appointment': appointment,
-                                                                              'experiment': experiment,
-                                                                              'site': site})
-        participant_recipient_list = [participant.user.email]
-        my_send_mail(participant_subject, participant_message, from_email, participant_recipient_list)
+    participant_subject = subject % experiment
+    participant_message = render_to_string('main/participant_email.txt', {'appointment': appointment,
+                                                                          'experiment': experiment,
+                                                                          'site': site})
+    participant_recipient_list = [participant.user.email]
+    my_send_mail(participant_subject, participant_message, from_email, participant_recipient_list)
 
-        researcher_subject = subject % participant
-        researcher_message = render_to_string('main/researcher_email.txt', {'appointment': appointment,
-                                                                            'experiment': experiment,
-                                                                            'participant': participant,
-                                                                            'site': site})
-        researcher_recipient_list = [researcher.user.email for researcher in experiment.researchers.all()]
-        my_send_mail(researcher_subject, researcher_message, from_email, researcher_recipient_list)
+    researcher_subject = subject % participant
+    researcher_message = render_to_string('main/researcher_email.txt', {'appointment': appointment,
+                                                                        'experiment': experiment,
+                                                                        'participant': participant,
+                                                                        'site': site})
+    researcher_recipient_list = [researcher.user.email for researcher in experiment.researchers.all()]
+    my_send_mail(researcher_subject, researcher_message, from_email, researcher_recipient_list)
 
-        return HttpResponse('The appointment was successfully created.')
-    else:
-        return HttpResponse('The appointment is already created.')
+    return HttpResponse('The appointment was successfully created.')
 
 def cancel_appointment(request, id):
     """
@@ -357,7 +364,7 @@ def cancel_appointment(request, id):
     except Appointment.DoesNotExist:
         return HttpResponse('Invalid ID')
     if appointment.is_cancelled:
-        return HttpResponse('The appointment is already cancelled.')
+        return HttpResponse('Already cancelled')
     appointment.is_cancelled = True
     appointment.save()
     experiment = appointment.slot.experiment_date_time_range.experiment_date.experiment

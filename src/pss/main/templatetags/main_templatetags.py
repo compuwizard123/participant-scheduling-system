@@ -9,3 +9,7 @@ def mungify(email):
     if '@' not in email:
         email += '@' + settings.SITE_DOMAIN
     return mark_safe(''.join(['&#%s;' % (ord(c)) for c in email]))
+
+@register.filter
+def already_signed_up(experiment, participant):
+    return experiment.already_signed_up(participant)
