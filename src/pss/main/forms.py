@@ -2,11 +2,19 @@ from datetime import datetime, timedelta
 
 from django import forms
 from django.contrib.auth.models import User
+from django.db.models import Count
 
-from pss.main.models import Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Researcher
+from pss.main.models import Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Researcher, Slot
 
 class ExperimentForm(forms.ModelForm):
-    # to-do: Be able to create qualifications and rooms.
+    def clean_number_of_participants_needed(self):
+        number_of_participants_needed = self.cleaned_data['number_of_participants_needed']
+        if self.instance.id is not None:
+            m = max(Slot.objects.filter(experiment_date_time_range__experiment_date__experiment__id=self.instance.id) \
+                    .annotate(appointment_count=Count('appointment')).values_list('appointment_count', flat=True))
+            if number_of_participants_needed < m:
+                raise forms.ValidationError('Ensure this value is greater than %s.' % max(0, m - 1))
+        return number_of_participants_needed
 
     class Meta:
         model = Experiment
@@ -34,7 +42,6 @@ class ExperimentDateTimeRangeForm(forms.ModelForm):
         super(ExperimentDateTimeRangeForm, self).__init__(*args, **kwargs)
         self.experiment_date = experiment_date or self.instance.experiment_date
 
-    # to-do: Include this logic in the admin too.
     def clean(self):
         cleaned_data = self.cleaned_data
         start_time = cleaned_data.get('start_time')
