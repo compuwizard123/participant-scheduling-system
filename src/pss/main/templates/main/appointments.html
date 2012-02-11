@@ -74,7 +74,7 @@ $("table.datatable").dataTable({
                     <td>{{ appointment.slot.start_time }}</td>
                     <td>{{ appointment.slot.end_time }}</td>
                     <td>{{ appointment.is_cancelled|yesno }}</td>
-                    <td><a href="{% url main-cancel_appointment appointment.id %}" class="cancel{% if appointment.is_cancelled %} disabled{% endif %}">Cancel</a></td>
+                    <td><a href="{% url main-cancel_appointment appointment.id %}" class="cancel{% if appointment.is_cancelled or appointment.slot.is_in_past %} disabled{% endif %}">Cancel</a></td>
                 </tr>
             {% endfor %}
         </tbody>

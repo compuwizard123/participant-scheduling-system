@@ -1,3 +1,4 @@
+from datetime import datetime
 try:
     import json
 except ImportError:
@@ -43,7 +44,9 @@ def experiments_view(request):
             return HttpResponseRedirect(reverse('main-profile'))
         # Participant
         is_researcher = False
-        experiments = Experiment.objects.all()
+        now = datetime.now()
+        experiments = Experiment.objects.filter(experimentdate__date__gte=now.date(),
+                                                experimentdate__experimentdatetimerange__slot__start_time__gte=now.time()).distinct()
     else:
         # Researcher
         is_researcher = True
@@ -296,7 +299,7 @@ def sign_up_for_appointment_start(request, id):
                                  time(slot.start_time),
                                  time(slot.end_time))
         url = reverse('main-sign_up_for_appointment_finish', args=[slot.id])
-        is_disabled = slot.is_full() or slot.is_conflicting_for(participant)
+        is_disabled = slot.is_in_past() or slot.is_full() or slot.is_conflicting_for(participant)
         slots.append({'label': label, 'url': url, 'is_disabled': is_disabled})
     return HttpResponse(json.dumps({'is_error': False, 'slots': slots}))
 
@@ -320,6 +323,8 @@ def sign_up_for_appointment_finish(request, id):
     experiment = slot.experiment_date_time_range.experiment_date.experiment
     if experiment.already_signed_up(participant):
         return HttpResponse('Already signed up')
+    if slot.is_in_past():
+        return HttpResponse('In past')
     if slot.is_full():
         return HttpResponse('Full')
     if slot.is_conflicting_for(participant):
@@ -365,6 +370,8 @@ def cancel_appointment(request, id):
         return HttpResponse('Invalid ID')
     if appointment.is_cancelled:
         return HttpResponse('Already cancelled')
+    if appointment.slot.is_in_past():
+        return HttpResponse('In past')
     appointment.is_cancelled = True
     appointment.save()
     experiment = appointment.slot.experiment_date_time_range.experiment_date.experiment

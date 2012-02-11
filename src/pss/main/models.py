@@ -139,6 +139,9 @@ class Slot(models.Model):
         self.end_time = end_datetime.time()
         super(Slot, self).save(*args, **kwargs)
 
+    def is_in_past(self):
+        return datetime.combine(self.experiment_date_time_range.experiment_date.date, self.start_time) < datetime.now()
+
     def is_full(self):
         return self.appointment_set.exclude(is_cancelled=True).count() == \
                self.experiment_date_time_range.experiment_date.experiment.number_of_participants_needed
