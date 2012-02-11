@@ -7,6 +7,7 @@ except ImportError:
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.humanize.templatetags.humanize import apnumber
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
@@ -65,12 +66,18 @@ def experiment_view(request, id=None):
     except Researcher.DoesNotExist:
         messages.add_message(request, messages.ERROR, 'Permission denied')
         return HttpResponseRedirect(reverse('main-index'))
+    message = None
     if id is None:
         instance = None
         action = 'Create'
     else:
         instance = get_object_or_404(Experiment, id=id, researchers=researcher)
         action = 'Edit'
+        count = Appointment.objects.filter(slot__experiment_date_time_range__experiment_date__experiment=instance).count()
+        if count > 0:
+            message = apnumber(count).title() + ' appointment'
+            if count > 1:
+                message += 's'
     if request.method == 'POST':
         if instance is not None and 'delete' in request.POST:
             instance.delete()
@@ -84,13 +91,20 @@ def experiment_view(request, id=None):
             experiment.save()
             if db_instance is not None and db_instance.length != experiment.length:
                 Slot.objects.filter(experiment_date_time_range__experiment_date__experiment=experiment).delete()
-                # to-do: Include warning.
+                if message is not None:
+                    if count > 1:
+                        message += ' were'
+                    else:
+                        message += ' was'
+                    messages.add_message(request, messages.SUCCESS, message + ' successfully deleted.')
                 for experiment_date_time_range in ExperimentDateTimeRange.objects.filter(experiment_date__experiment=experiment):
                     experiment_date_time_range.create_slots()
             messages.add_message(request, messages.SUCCESS, 'The experiment was successfully saved.')
             return HttpResponseRedirect(reverse('main-list_experiments'))
     else:
         form = ExperimentForm(instance=instance)
+    if message is not None:
+        messages.add_message(request, messages.ERROR, message + ' will be deleted if the length field is changed.')
     return render_to_response('main/experiment.html',
                               {'instance': instance,
                                'action': action,
@@ -116,6 +130,7 @@ def experiment_date_view(request, experiment_id=None, experiment_date_id=None):
     except Researcher.DoesNotExist:
         messages.add_message(request, messages.ERROR, 'Permission denied')
         return HttpResponseRedirect(reverse('main-index'))
+    message = None
     if experiment_id is not None:
         instance = None
         action = 'Create'
@@ -124,6 +139,11 @@ def experiment_date_view(request, experiment_id=None, experiment_date_id=None):
         instance = get_object_or_404(ExperimentDate, id=experiment_date_id, experiment__researchers=researcher)
         action = 'Edit'
         experiment = instance.experiment
+        count = Appointment.objects.filter(slot__experiment_date_time_range__experiment_date=instance).count()
+        if count > 0:
+            message = apnumber(count).title() + ' appointment'
+            if count > 1:
+                message += 's'
     if request.method == 'POST':
         if instance is not None and 'delete' in request.POST:
             instance.delete()
@@ -134,10 +154,18 @@ def experiment_date_view(request, experiment_id=None, experiment_date_id=None):
             experiment_date = form.save(commit=False)
             experiment_date.experiment = experiment
             experiment_date.save()
+            if message is not None:
+                if count > 1:
+                    message += ' were'
+                else:
+                    message += ' was'
+                messages.add_message(request, messages.SUCCESS, message + ' successfully updated.')
             messages.add_message(request, messages.SUCCESS, 'The experiment date for %s was successfully saved.' % experiment)
             return HttpResponseRedirect(reverse('main-list_experiment_dates', args=[experiment.id]))
     else:
         form = ExperimentDateForm(experiment, instance=instance)
+    if message is not None:
+        messages.add_message(request, messages.ERROR, message + ' will be updated if the date field is changed.')
     return render_to_response('main/experiment_date.html',
                               {'instance': instance,
                                'action': action,
@@ -164,6 +192,7 @@ def experiment_date_time_range_view(request, experiment_date_id=None, experiment
     except Researcher.DoesNotExist:
         messages.add_message(request, messages.ERROR, 'Permission denied')
         return HttpResponseRedirect(reverse('main-index'))
+    message = None
     if experiment_date_id is not None:
         instance = None
         action = 'Create'
@@ -172,6 +201,11 @@ def experiment_date_time_range_view(request, experiment_date_id=None, experiment
         instance = get_object_or_404(ExperimentDateTimeRange, id=experiment_date_time_range_id, experiment_date__experiment__researchers=researcher)
         action = 'Edit'
         experiment_date = instance.experiment_date
+        count = Appointment.objects.filter(slot__experiment_date_time_range=instance).count()
+        if count > 0:
+            message = apnumber(count).title() + ' appointment'
+            if count > 1:
+                message += 's'
     if request.method == 'POST':
         if instance is not None and 'delete' in request.POST:
             instance.delete()
@@ -187,13 +221,20 @@ def experiment_date_time_range_view(request, experiment_date_id=None, experiment
                                              db_instance.end_time != experiment_date_time_range.end_time)
             if _:
                 experiment_date_time_range.slot_set.all().delete()
-                # to-do: Include warning.
+                if message is not None:
+                    if count > 1:
+                        message += ' were'
+                    else:
+                        message += ' was'
+                    messages.add_message(request, messages.SUCCESS, message + ' successfully deleted.')
             if _ or instance is None:
                 experiment_date_time_range.create_slots()
             messages.add_message(request, messages.SUCCESS, 'The experiment date time range for %s was successfully saved.' % experiment_date)
             return HttpResponseRedirect(reverse('main-list_experiment_date_time_ranges', args=[experiment_date.id]))
     else:
         form = ExperimentDateTimeRangeForm(experiment_date, instance=instance)
+    if message is not None:
+        messages.add_message(request, messages.ERROR, message + ' will be deleted if the start time field or the end time field is changed.')
     return render_to_response('main/experiment_date_time_range.html',
                               {'instance': instance,
                                'action': action,
