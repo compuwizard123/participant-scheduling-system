@@ -20,6 +20,8 @@ from django.template.loader import render_to_string
 from pss.main.forms import ExperimentForm, ExperimentDateForm, ExperimentDateTimeRangeForm, UserForm, ParticipantForm, ResearcherForm
 from pss.main.models import Appointment, Experiment, ExperimentDate, ExperimentDateTimeRange, Participant, Researcher, Slot
 
+from django.utils.translation import ugettext as _
+
 def my_send_mail(*args):
     if settings.DEBUG or True: # to-do: Remove "or True" for production.
         _ = ',\n'.join([' ' * 4 + repr(arg) for arg in args])
@@ -41,7 +43,7 @@ def experiments_view(request):
             participant = user.participant
         except Participant.DoesNotExist:
             # No profile
-            messages.add_message(request, messages.ERROR, 'Please create a profile first.')
+            messages.add_message(request, messages.ERROR, _('Please create a profile first.'))
             return HttpResponseRedirect(reverse('main-profile'))
         # Participant
         is_researcher = False
@@ -64,7 +66,7 @@ def experiment_view(request, id=None):
     try:
         researcher = request.user.researcher
     except Researcher.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Permission denied')
+        messages.add_message(request, messages.ERROR, _('Permission denied'))
         return HttpResponseRedirect(reverse('main-index'))
     message = None
     if id is None:
@@ -81,7 +83,7 @@ def experiment_view(request, id=None):
     if request.method == 'POST':
         if instance is not None and 'delete' in request.POST:
             instance.delete()
-            messages.add_message(request, messages.SUCCESS, 'The experiment was successfully deleted.')
+            messages.add_message(request, messages.SUCCESS, _('The experiment was successfully deleted.'))
             return HttpResponseRedirect(reverse('main-list_experiments'))
         form = ExperimentForm(request.POST, instance=instance)
         if form.is_valid():
@@ -96,15 +98,15 @@ def experiment_view(request, id=None):
                         message += ' were'
                     else:
                         message += ' was'
-                    messages.add_message(request, messages.SUCCESS, message + ' successfully deleted.')
+                    messages.add_message(request, messages.SUCCESS, message + _(' successfully deleted.'))
                 for experiment_date_time_range in ExperimentDateTimeRange.objects.filter(experiment_date__experiment=experiment):
                     experiment_date_time_range.create_slots()
-            messages.add_message(request, messages.SUCCESS, 'The experiment was successfully saved.')
+            messages.add_message(request, messages.SUCCESS, _('The experiment was successfully saved.'))
             return HttpResponseRedirect(reverse('main-list_experiments'))
     else:
         form = ExperimentForm(instance=instance)
     if message is not None:
-        messages.add_message(request, messages.ERROR, message + ' will be deleted if the length field is changed.')
+        messages.add_message(request, messages.ERROR, message + _(' will be deleted if the length field is changed.'))
     return render_to_response('main/experiment.html',
                               {'instance': instance,
                                'action': action,
@@ -116,7 +118,7 @@ def experiment_dates_view(request, experiment_id):
     try:
         researcher = request.user.researcher
     except Researcher.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Permission denied')
+        messages.add_message(request, messages.ERROR, _('Permission denied'))
         return HttpResponseRedirect(reverse('main-index'))
     experiment = get_object_or_404(Experiment, id=experiment_id, researchers=researcher)
     return render_to_response('main/experiment_dates.html',
@@ -128,7 +130,7 @@ def experiment_date_view(request, experiment_id=None, experiment_date_id=None):
     try:
         researcher = request.user.researcher
     except Researcher.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Permission denied')
+        messages.add_message(request, messages.ERROR, _('Permission denied'))
         return HttpResponseRedirect(reverse('main-index'))
     message = None
     if experiment_id is not None:
@@ -147,7 +149,7 @@ def experiment_date_view(request, experiment_id=None, experiment_date_id=None):
     if request.method == 'POST':
         if instance is not None and 'delete' in request.POST:
             instance.delete()
-            messages.add_message(request, messages.SUCCESS, 'The experiment date for %s was successfully deleted.' % experiment)
+            messages.add_message(request, messages.SUCCESS, _('The experiment date for %s was successfully deleted.') % experiment)
             return HttpResponseRedirect(reverse('main-list_experiment_dates', args=[experiment.id]))
         form = ExperimentDateForm(experiment, request.POST, instance=instance)
         if form.is_valid():
@@ -159,13 +161,13 @@ def experiment_date_view(request, experiment_id=None, experiment_date_id=None):
                     message += ' were'
                 else:
                     message += ' was'
-                messages.add_message(request, messages.SUCCESS, message + ' successfully updated.')
-            messages.add_message(request, messages.SUCCESS, 'The experiment date for %s was successfully saved.' % experiment)
+                messages.add_message(request, messages.SUCCESS, message + _(' successfully updated.'))
+            messages.add_message(request, messages.SUCCESS, _('The experiment date for %s was successfully saved.') % experiment)
             return HttpResponseRedirect(reverse('main-list_experiment_dates', args=[experiment.id]))
     else:
         form = ExperimentDateForm(experiment, instance=instance)
     if message is not None:
-        messages.add_message(request, messages.ERROR, message + ' will be updated if the date field is changed.')
+        messages.add_message(request, messages.ERROR, message + _(' will be updated if the date field is changed.'))
     return render_to_response('main/experiment_date.html',
                               {'instance': instance,
                                'action': action,
@@ -178,7 +180,7 @@ def experiment_date_time_ranges_view(request, experiment_date_id):
     try:
         researcher = request.user.researcher
     except Researcher.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Permission denied')
+        messages.add_message(request, messages.ERROR, _('Permission denied'))
         return HttpResponseRedirect(reverse('main-index'))
     experiment_date = get_object_or_404(ExperimentDate, id=experiment_date_id, experiment__researchers=researcher)
     return render_to_response('main/experiment_date_time_ranges.html',
@@ -190,7 +192,7 @@ def experiment_date_time_range_view(request, experiment_date_id=None, experiment
     try:
         researcher = request.user.researcher
     except Researcher.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Permission denied')
+        messages.add_message(request, messages.ERROR, _('Permission denied'))
         return HttpResponseRedirect(reverse('main-index'))
     message = None
     if experiment_date_id is not None:
@@ -209,7 +211,7 @@ def experiment_date_time_range_view(request, experiment_date_id=None, experiment
     if request.method == 'POST':
         if instance is not None and 'delete' in request.POST:
             instance.delete()
-            messages.add_message(request, messages.SUCCESS, 'The experiment date time range for %s was successfully deleted.' % experiment_date)
+            messages.add_message(request, messages.SUCCESS, _('The experiment date time range for %s was successfully deleted.') % experiment_date)
             return HttpResponseRedirect(reverse('main-list_experiment_date_time_ranges', args=[experiment_date.id]))
         form = ExperimentDateTimeRangeForm(experiment_date, request.POST, instance=instance)
         if form.is_valid():
@@ -226,15 +228,15 @@ def experiment_date_time_range_view(request, experiment_date_id=None, experiment
                         message += ' were'
                     else:
                         message += ' was'
-                    messages.add_message(request, messages.SUCCESS, message + ' successfully deleted.')
+                    messages.add_message(request, messages.SUCCESS, message + _(' successfully deleted.'))
             if _ or instance is None:
                 experiment_date_time_range.create_slots()
-            messages.add_message(request, messages.SUCCESS, 'The experiment date time range for %s was successfully saved.' % experiment_date)
+            messages.add_message(request, messages.SUCCESS, _('The experiment date time range for %s was successfully saved.') % experiment_date)
             return HttpResponseRedirect(reverse('main-list_experiment_date_time_ranges', args=[experiment_date.id]))
     else:
         form = ExperimentDateTimeRangeForm(experiment_date, instance=instance)
     if message is not None:
-        messages.add_message(request, messages.ERROR, message + ' will be deleted if the start time field or the end time field is changed.')
+        messages.add_message(request, messages.ERROR, message + _(' will be deleted if the start time field or the end time field is changed.'))
     return render_to_response('main/experiment_date_time_range.html',
                               {'instance': instance,
                                'action': action,
@@ -267,10 +269,10 @@ def profile(request):
             researcher_or_participant.user = user
             researcher_or_participant.save()
             messages.add_message(request, messages.SUCCESS,
-                                 'Your profile was successfully saved.')
+                                 _('Your profile was successfully saved.'))
             return HttpResponseRedirect(reverse('main-profile'))
         messages.add_message(request, messages.ERROR,
-                             'Please correct the errors below.')
+                             _('Please correct the errors below.'))
     else:
         user_form = UserForm(instance=user_instance)
         researcher_or_participant_form = ResearcherOrParticipantForm(instance=researcher_or_participant_instance)
@@ -289,10 +291,10 @@ def appointments_view(request):
             user.researcher
         except Researcher.DoesNotExist:
             # No profile
-            messages.add_message(request, messages.ERROR, 'Please create a profile first.')
+            messages.add_message(request, messages.ERROR, _('Please create a profile first.'))
             return HttpResponseRedirect(reverse('main-profile'))
         # Researcher
-        messages.add_message(request, messages.ERROR, 'Please select an experiment.')
+        messages.add_message(request, messages.ERROR, _('Please select an experiment.'))
         return HttpResponseRedirect(reverse('main-list_experiments'))
     # Participant
     appointments = participant.appointment_set.all()
@@ -306,7 +308,7 @@ def participants_view(request, id):
     try:
         researcher = request.user.researcher
     except Researcher.DoesNotExist:
-        messages.add_message(request, messages.ERROR, 'Permission denied')
+        messages.add_message(request, messages.ERROR, _('Permission denied'))
         return HttpResponseRedirect(reverse('main-index'))
     experiment = get_object_or_404(Experiment, id=id, researchers=researcher)
     appointments = Appointment.objects.filter(slot__experiment_date_time_range__experiment_date__experiment=experiment)
@@ -320,20 +322,20 @@ def sign_up_for_appointment_start(request, id):
     An AJAX view
     """
     if not request.is_ajax():
-        messages.add_message(request, messages.ERROR, 'Permission denied')
+        messages.add_message(request, messages.ERROR, _('Permission denied'))
         return HttpResponseRedirect(reverse('main-index'))
     if request.user.is_anonymous():
-        return HttpResponse(json.dumps({'is_error': True, 'error': 'Anonymous user'}))
+        return HttpResponse(json.dumps({'is_error': True, 'error': _('Anonymous user')}))
     try:
         participant = request.user.participant
     except Participant.DoesNotExist:
-        return HttpResponse(json.dumps({'is_error': True, 'error': 'No profile'}))
+        return HttpResponse(json.dumps({'is_error': True, 'error': _('No profile')}))
     try:
         experiment = Experiment.objects.get(id=id)
     except Experiment.DoesNotExist:
-        return HttpResponse(json.dumps({'is_error': True, 'error': 'Invalid ID'}))
+        return HttpResponse(json.dumps({'is_error': True, 'error': _('Invalid ID')}))
     if experiment.already_signed_up(participant):
-        return HttpResponse(json.dumps({'is_error': True, 'error': 'Already signed up'}))
+        return HttpResponse(json.dumps({'is_error': True, 'error': _('Already signed up')}))
     slots = []
     for slot in Slot.objects.filter(experiment_date_time_range__experiment_date__experiment=experiment):
         label = '%s: %s - %s' % (date(slot.experiment_date_time_range.experiment_date.date),
@@ -349,7 +351,7 @@ def sign_up_for_appointment_finish(request, id):
     An AJAX view
     """
     if not request.is_ajax():
-        messages.add_message(request, messages.ERROR, 'Permission denied')
+        messages.add_message(request, messages.ERROR, _('Permission denied'))
         return HttpResponseRedirect(reverse('main-index'))
     if request.user.is_anonymous():
         return HttpResponse('Anonymous user')
@@ -397,7 +399,7 @@ def cancel_appointment(request, id):
     An AJAX view
     """
     if not request.is_ajax():
-        messages.add_message(request, messages.ERROR, 'Permission denied')
+        messages.add_message(request, messages.ERROR, _('Permission denied'))
         return HttpResponseRedirect(reverse('main-index'))
     if request.user.is_anonymous():
         return HttpResponse('Anonymous user')

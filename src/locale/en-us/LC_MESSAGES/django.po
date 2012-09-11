@@ -1,0 +1,104 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-09-11 09:58-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: pss/main/views.py:46 pss/main/views.py:294
+msgid "Please create a profile first."
+msgstr "Please create a profile first."
+
+#: pss/main/views.py:69 pss/main/views.py:121 pss/main/views.py:133
+#: pss/main/views.py:183 pss/main/views.py:195 pss/main/views.py:311
+#: pss/main/views.py:325 pss/main/views.py:354 pss/main/views.py:402
+msgid "Permission denied"
+msgstr "Permission denied"
+
+#: pss/main/views.py:86
+msgid "The experiment was successfully deleted."
+msgstr "The experiment was successfully deleted."
+
+#: pss/main/views.py:101 pss/main/views.py:231
+msgid " successfully deleted."
+msgstr " successfully deleted."
+
+#: pss/main/views.py:104
+msgid "The experiment was successfully saved."
+msgstr "The experiment was successfully saved."
+
+#: pss/main/views.py:109
+msgid " will be deleted if the length field is changed."
+msgstr " will be deleted if the length field is changed."
+
+#: pss/main/views.py:152
+#, python-format
+msgid "The experiment date for %s was successfully deleted."
+msgstr "The experiment date for %s was successfully deleted."
+
+#: pss/main/views.py:164
+msgid " successfully updated."
+msgstr " successfully updated."
+
+#: pss/main/views.py:165
+#, python-format
+msgid "The experiment date for %s was successfully saved."
+msgstr "The experiment date for %s was successfully saved."
+
+#: pss/main/views.py:170
+msgid " will be updated if the date field is changed."
+msgstr " will be updated if the date field is changed."
+
+#: pss/main/views.py:214
+#, python-format
+msgid "The experiment date time range for %s was successfully deleted."
+msgstr "The experiment date time range for %s was successfully deleted."
+
+#: pss/main/views.py:234
+#, python-format
+msgid "The experiment date time range for %s was successfully saved."
+msgstr "The experiment date time range for %s was successfully saved."
+
+#: pss/main/views.py:239
+msgid " will be deleted if the start time field or the end time field is changed."
+msgstr " will be deleted if the start time field or the end time field is changed."
+
+#: pss/main/views.py:272
+msgid "Your profile was successfully saved."
+msgstr "Your profile was successfully saved."
+
+#: pss/main/views.py:275
+msgid "Please correct the errors below."
+msgstr "Please correct the errors below."
+
+#: pss/main/views.py:297
+msgid "Please select an experiment."
+msgstr "Please select an experiment."
+
+#: pss/main/views.py:328
+msgid "Anonymous user"
+msgstr "Anonymous user"
+
+#: pss/main/views.py:332
+msgid "No profile"
+msgstr "No profile"
+
+#: pss/main/views.py:336
+msgid "Invalid ID"
+msgstr "Invalid ID"
+
+#: pss/main/views.py:338
+msgid "Already signed up"
+msgstr "Already signed up"
