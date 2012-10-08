@@ -1,0 +1,414 @@
+test_get_all_permissions (django.contrib.auth.tests.auth_backends.AnonymousUserBackendTest) ... ok
+test_has_module_perms (django.contrib.auth.tests.auth_backends.AnonymousUserBackendTest) ... ok
+test_has_perm (django.contrib.auth.tests.auth_backends.AnonymousUserBackendTest) ... ok
+test_has_perms (django.contrib.auth.tests.auth_backends.AnonymousUserBackendTest) ... ok
+test_inactive_user (django.contrib.auth.tests.forms.AuthenticationFormTest) ... ok
+test_invalid_username (django.contrib.auth.tests.forms.AuthenticationFormTest) ... ok
+test_success (django.contrib.auth.tests.forms.AuthenticationFormTest) ... ok
+test_custom_perms (django.contrib.auth.tests.auth_backends.BackendTest) ... ok
+test_get_all_superuser_permissions (django.contrib.auth.tests.auth_backends.BackendTest)
+A superuser has all permissions. Refs #14795 ... ok
+test_has_no_object_perm (django.contrib.auth.tests.auth_backends.BackendTest)
+Regressiontest for #12462 ... ok
+test_has_perm (django.contrib.auth.tests.auth_backends.BackendTest) ... ok
+test_anonymous_user (django.contrib.auth.tests.basic.BasicTestCase)
+Check the properties of the anonymous user ... ok
+test_createsuperuser_management_command (django.contrib.auth.tests.basic.BasicTestCase)
+Check the operation of the createsuperuser management command ... ok
+test_superuser (django.contrib.auth.tests.basic.BasicTestCase)
+Check the creation and properties of a superuser ... ok
+test_user (django.contrib.auth.tests.basic.BasicTestCase)
+Check that users can be created and can set their password ... ok
+test_password_change_fails_with_invalid_old_password (django.contrib.auth.tests.views.ChangePasswordTest) ... ok
+test_password_change_fails_with_mismatched_passwords (django.contrib.auth.tests.views.ChangePasswordTest) ... ok
+test_password_change_succeeds (django.contrib.auth.tests.views.ChangePasswordTest) ... ok
+test_has_module_perms (django.contrib.auth.tests.auth_backends.InActiveUserBackendTest) ... ok
+test_has_perm (django.contrib.auth.tests.auth_backends.InActiveUserBackendTest) ... ok
+testCallable (django.contrib.auth.tests.decorators.LoginRequiredTestCase) ... ok
+testLoginRequired (django.contrib.auth.tests.decorators.LoginRequiredTestCase) ... ok
+testLoginRequiredNextUrl (django.contrib.auth.tests.decorators.LoginRequiredTestCase) ... ok
+testView (django.contrib.auth.tests.decorators.LoginRequiredTestCase) ... ok
+test_current_site_in_context_after_login (django.contrib.auth.tests.views.LoginTest) ... ok
+test_security_check (django.contrib.auth.tests.views.LoginTest) ... ok
+test_https_login_url (django.contrib.auth.tests.views.LoginURLSettings) ... ok
+test_login_url_with_querystring (django.contrib.auth.tests.views.LoginURLSettings) ... ok
+test_remote_login_url (django.contrib.auth.tests.views.LoginURLSettings) ... ok
+test_remote_login_url_with_next_querystring (django.contrib.auth.tests.views.LoginURLSettings) ... ok
+test_standard_login_url (django.contrib.auth.tests.views.LoginURLSettings) ... ok
+test_14377 (django.contrib.auth.tests.views.LogoutTest) ... ok
+test_logout_default (django.contrib.auth.tests.views.LogoutTest)
+Logout without next_page option renders the default template ... ok
+test_logout_with_custom_redirect_argument (django.contrib.auth.tests.views.LogoutTest)
+Logout with custom query string redirects to specified resource ... ok
+test_logout_with_next_page_specified (django.contrib.auth.tests.views.LogoutTest)
+Logout with next_page option given redirects to specified resource ... ok
+test_logout_with_overridden_redirect_url (django.contrib.auth.tests.views.LogoutTest) ... ok
+test_logout_with_redirect_argument (django.contrib.auth.tests.views.LogoutTest)
+Logout with query string redirects to specified resource ... ok
+test_security_check (django.contrib.auth.tests.views.LogoutTest) ... ok
+test_get_all_permissions (django.contrib.auth.tests.auth_backends.NoAnonymousUserBackendTest) ... ok
+test_has_module_perms (django.contrib.auth.tests.auth_backends.NoAnonymousUserBackendTest) ... ok
+test_has_perm (django.contrib.auth.tests.auth_backends.NoAnonymousUserBackendTest) ... ok
+test_has_perms (django.contrib.auth.tests.auth_backends.NoAnonymousUserBackendTest) ... ok
+test_raises_exception (django.contrib.auth.tests.auth_backends.NoBackendsTest) ... ok
+test_has_module_perms (django.contrib.auth.tests.auth_backends.NoInActiveUserBackendTest) ... ok
+test_has_perm (django.contrib.auth.tests.auth_backends.NoInActiveUserBackendTest) ... ok
+test_field_order (django.contrib.auth.tests.forms.PasswordChangeFormTest) ... ok
+test_incorrect_password (django.contrib.auth.tests.forms.PasswordChangeFormTest) ... ok
+test_password_verification (django.contrib.auth.tests.forms.PasswordChangeFormTest) ... ok
+test_success (django.contrib.auth.tests.forms.PasswordChangeFormTest) ... ok
+test_bug_5605 (django.contrib.auth.tests.forms.PasswordResetFormTest) ... ok
+test_cleaned_data (django.contrib.auth.tests.forms.PasswordResetFormTest) ... ok
+test_inactive_user (django.contrib.auth.tests.forms.PasswordResetFormTest) ... ok
+test_invalid_email (django.contrib.auth.tests.forms.PasswordResetFormTest) ... ok
+test_nonexistant_email (django.contrib.auth.tests.forms.PasswordResetFormTest) ... ok
+test_confirm_complete (django.contrib.auth.tests.views.PasswordResetTest) ... ok
+test_confirm_different_passwords (django.contrib.auth.tests.views.PasswordResetTest) ... ok
+test_confirm_invalid (django.contrib.auth.tests.views.PasswordResetTest) ... ok
+test_confirm_invalid_post (django.contrib.auth.tests.views.PasswordResetTest) ... ok
+test_confirm_invalid_user (django.contrib.auth.tests.views.PasswordResetTest) ... ok
+test_confirm_overflow_user (django.contrib.auth.tests.views.PasswordResetTest) ... ok
+test_confirm_valid (django.contrib.auth.tests.views.PasswordResetTest) ... ok
+test_email_found (django.contrib.auth.tests.views.PasswordResetTest)
+Email is sent if a valid email address is provided for password reset ... ok
+test_email_found_custom_from (django.contrib.auth.tests.views.PasswordResetTest)
+Email is sent if a valid email address is provided for password reset when a custom from_email is provided. ... ok
+test_email_not_found (django.contrib.auth.tests.views.PasswordResetTest)
+Error is raised if the provided email address isn't currently registered ... ok
+test_site_profile_not_available (django.contrib.auth.tests.models.ProfileTestCase) ... ok
+test_known_user (django.contrib.auth.tests.remote_user.RemoteUserCustomTest) ... ok
+test_last_login (django.contrib.auth.tests.remote_user.RemoteUserCustomTest) ... ok
+test_no_remote_user (django.contrib.auth.tests.remote_user.RemoteUserCustomTest) ... ok
+test_unknown_user (django.contrib.auth.tests.remote_user.RemoteUserCustomTest) ... ok
+test_known_user (django.contrib.auth.tests.remote_user.RemoteUserNoCreateTest) ... ok
+test_last_login (django.contrib.auth.tests.remote_user.RemoteUserNoCreateTest) ... ok
+test_no_remote_user (django.contrib.auth.tests.remote_user.RemoteUserNoCreateTest) ... ok
+test_unknown_user (django.contrib.auth.tests.remote_user.RemoteUserNoCreateTest) ... ok
+test_known_user (django.contrib.auth.tests.remote_user.RemoteUserTest) ... ok
+test_last_login (django.contrib.auth.tests.remote_user.RemoteUserTest) ... ok
+test_no_remote_user (django.contrib.auth.tests.remote_user.RemoteUserTest) ... ok
+test_unknown_user (django.contrib.auth.tests.remote_user.RemoteUserTest) ... ok
+test_get_all_permissions (django.contrib.auth.tests.auth_backends.RowlevelBackendTest) ... ok
+test_get_group_permissions (django.contrib.auth.tests.auth_backends.RowlevelBackendTest) ... ok
+test_has_perm (django.contrib.auth.tests.auth_backends.RowlevelBackendTest) ... ok
+test_password_verification (django.contrib.auth.tests.forms.SetPasswordFormTest) ... ok
+test_success (django.contrib.auth.tests.forms.SetPasswordFormTest) ... ok
+test_login (django.contrib.auth.tests.signals.SignalTestCase) ... ok
+test_logout (django.contrib.auth.tests.signals.SignalTestCase) ... ok
+test_logout_anonymous (django.contrib.auth.tests.signals.SignalTestCase) ... ok
+test_permission_register_order (django.contrib.auth.tests.permissions.TestAuthPermissions)
+Test that the order of registered permissions doesn't break ... ok
+test_10265 (django.contrib.auth.tests.tokens.TokenGeneratorTest) ... ok
+test_date_length (django.contrib.auth.tests.tokens.TokenGeneratorTest) ... ok
+test_django12_hash (django.contrib.auth.tests.tokens.TokenGeneratorTest) ... ok
+test_make_token (django.contrib.auth.tests.tokens.TokenGeneratorTest) ... ok
+test_timeout (django.contrib.auth.tests.tokens.TokenGeneratorTest) ... ok
+test_bug_14242 (django.contrib.auth.tests.forms.UserChangeFormTest) ... ok
+test_username_validity (django.contrib.auth.tests.forms.UserChangeFormTest) ... ok
+test_both_passwords (django.contrib.auth.tests.forms.UserCreationFormTest) ... ok
+test_invalid_data (django.contrib.auth.tests.forms.UserCreationFormTest) ... ok
+test_password_verification (django.contrib.auth.tests.forms.UserCreationFormTest) ... ok
+test_success (django.contrib.auth.tests.forms.UserCreationFormTest) ... ok
+test_user_already_exists (django.contrib.auth.tests.forms.UserCreationFormTest) ... ok
+test_lookup_cache (django.contrib.contenttypes.tests.ContentTypesTests) ... ok
+test_shortcut_view (django.contrib.contenttypes.tests.ContentTypesTests) ... ok
+test_clear (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_custom_expiry_datetime (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_custom_expiry_reset (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_custom_expiry_seconds (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_custom_expiry_timedelta (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_cycle (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_decode (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_decode_django12 (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_default_expiry (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_delete (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_flush (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_get_empty (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_get_expire_at_browser_close (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_has_key (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_invalid_key (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_iteritems (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_iterkeys (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_itervalues (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_new_session (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_pop (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_pop_default (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_save (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_setdefault (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_store (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_update (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_values (django.contrib.sessions.tests.CacheDBSessionTests) ... ok
+test_clear (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_custom_expiry_datetime (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_custom_expiry_reset (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_custom_expiry_seconds (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_custom_expiry_timedelta (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_cycle (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_decode (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_decode_django12 (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_default_expiry (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_delete (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_flush (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_get_empty (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_get_expire_at_browser_close (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_has_key (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_invalid_key (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_iteritems (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_iterkeys (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_itervalues (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_new_session (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_pop (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_pop_default (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_save (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_session_get_decoded (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_sessionmanager_save (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_setdefault (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_store (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_update (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_values (django.contrib.sessions.tests.DatabaseSessionTests) ... ok
+test_get_current_site (django.contrib.sites.tests.SitesFrameworkTests) ... ok
+test_site_cache (django.contrib.sites.tests.SitesFrameworkTests) ... ok
+test_site_manager (django.contrib.sites.tests.SitesFrameworkTests) ... ok
+test_add (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_add_lazy_translation (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_add_update (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_custom_tags (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_default_level (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_domain (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_existing_add (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_existing_add_read_update (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_existing_read (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_existing_read_add_update (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_full_request_response_cycle (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_get (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_get_bad_cookie (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_high_level (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_json_encoder_decoder (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_low_level (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_max_cookie_length (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_middleware_disabled_anon_user (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_middleware_disabled_anon_user_fail_silently (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_middleware_disabled_auth_user (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_multiple_posts (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_no_update (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_settings_level (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_tags (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_with_template_response (django.contrib.messages.tests.cookie.CookieTest) ... ok
+test_add (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_add_lazy_translation (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_add_update (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_custom_tags (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_default_level (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_existing_add (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_existing_add_read_update (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_existing_read (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_existing_read_add_update (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_flush_used_backends (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_full_request_response_cycle (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_get (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_get_empty (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_get_fallback (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_get_fallback_only (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_high_level (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_low_level (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_middleware_disabled_anon_user (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_middleware_disabled_anon_user_fail_silently (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_middleware_disabled_auth_user (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_multiple_posts (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_no_fallback (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_no_update (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_session_fallback (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_session_fallback_only (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_settings_level (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_tags (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_with_template_response (django.contrib.messages.tests.fallback.FallbackTest) ... ok
+test_add (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_add_lazy_translation (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_add_update (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_custom_tags (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_default_level (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_existing_add (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_existing_add_read_update (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_existing_read (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_existing_read_add_update (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_flush_used_backends (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_full_request_response_cycle (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_get (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_get_empty (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_get_fallback (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_get_fallback_only (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_get_legacy (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_get_legacy_only (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_high_level (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_low_level (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_middleware_disabled_anon_user (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_middleware_disabled_anon_user_fail_silently (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_middleware_disabled_auth_user (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_multiple_posts (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_no_fallback (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_no_update (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_session_fallback (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_session_fallback_only (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_settings_level (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_tags (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_with_template_response (django.contrib.messages.tests.user_messages.LegacyFallbackTest) ... ok
+test_add (django.contrib.messages.tests.session.SessionTest) ... ok
+test_add_lazy_translation (django.contrib.messages.tests.session.SessionTest) ... ok
+test_add_update (django.contrib.messages.tests.session.SessionTest) ... ok
+test_custom_tags (django.contrib.messages.tests.session.SessionTest) ... ok
+test_default_level (django.contrib.messages.tests.session.SessionTest) ... ok
+test_existing_add (django.contrib.messages.tests.session.SessionTest) ... ok
+test_existing_add_read_update (django.contrib.messages.tests.session.SessionTest) ... ok
+test_existing_read (django.contrib.messages.tests.session.SessionTest) ... ok
+test_existing_read_add_update (django.contrib.messages.tests.session.SessionTest) ... ok
+test_full_request_response_cycle (django.contrib.messages.tests.session.SessionTest) ... ok
+test_get (django.contrib.messages.tests.session.SessionTest) ... ok
+test_high_level (django.contrib.messages.tests.session.SessionTest) ... ok
+test_low_level (django.contrib.messages.tests.session.SessionTest) ... ok
+test_middleware_disabled_anon_user (django.contrib.messages.tests.session.SessionTest) ... ok
+test_middleware_disabled_anon_user_fail_silently (django.contrib.messages.tests.session.SessionTest) ... ok
+test_middleware_disabled_auth_user (django.contrib.messages.tests.session.SessionTest) ... ok
+test_multiple_posts (django.contrib.messages.tests.session.SessionTest) ... ok
+test_no_update (django.contrib.messages.tests.session.SessionTest) ... ok
+test_settings_level (django.contrib.messages.tests.session.SessionTest) ... ok
+test_tags (django.contrib.messages.tests.session.SessionTest) ... ok
+test_with_template_response (django.contrib.messages.tests.session.SessionTest) ... ok
+test_add (django.contrib.messages.tests.user_messages.UserMessagesTest) ... ok
+test_get (django.contrib.messages.tests.user_messages.UserMessagesTest) ... ok
+test_get_anonymous (django.contrib.messages.tests.user_messages.UserMessagesTest) ... ok
+test_registration_form (registration.tests.RegistrationFormTests) ... ok
+test_registration_form_no_free_email (registration.tests.RegistrationFormTests) ... ok
+test_registration_form_tos (registration.tests.RegistrationFormTests) ... ok
+test_registration_form_unique_email (registration.tests.RegistrationFormTests) ... ok
+test_account_expiration_condition (registration.tests.RegistrationModelTests) ... ok
+test_activation (registration.tests.RegistrationModelTests) ... ok
+test_activation_email (registration.tests.RegistrationModelTests) ... ok
+test_expired_user_deletion (registration.tests.RegistrationModelTests) ... ok
+test_management_command (registration.tests.RegistrationModelTests) ... ok
+test_new_user_is_inactive (registration.tests.RegistrationModelTests) ... ok
+test_registration_profile_created (registration.tests.RegistrationModelTests) ... ok
+test_activation_view (registration.tests.RegistrationViewTests) ... ok
+test_registration_view (registration.tests.RegistrationViewTests) ... ok
+test_as_uni_errors_form_with_non_field_errors (uni_form.tests.tests.TestBasicFunctionalityTags) ... ok
+test_as_uni_errors_form_without_non_field_errors (uni_form.tests.tests.TestBasicFunctionalityTags) ... ok
+test_as_uni_form_with_form (uni_form.tests.tests.TestBasicFunctionalityTags) ... ok
+test_as_uni_form_with_formset (uni_form.tests.tests.TestBasicFunctionalityTags) ... ok
+test_uni_form_setup (uni_form.tests.tests.TestBasicFunctionalityTags) ... ok
+test_CSRF_token_GET_form (uni_form.tests.tests.TestFormHelpers) ... ok
+test_CSRF_token_POST_form (uni_form.tests.tests.TestFormHelpers) ... ok
+test_invalid_helper_method (uni_form.tests.tests.TestFormHelpers) ... ok
+test_uni_form_formset_with_helper_without_layout (uni_form.tests.tests.TestFormHelpers) ... ok
+test_uni_form_helper_inputs (uni_form.tests.tests.TestFormHelpers) ... ok
+test_uni_form_invalid_helper (uni_form.tests.tests.TestFormHelpers) ... ok
+test_uni_form_with_helper_without_layout (uni_form.tests.tests.TestFormHelpers) ... ok
+test_uni_form_without_helper (uni_form.tests.tests.TestFormHelpers) ... ok
+test_change_layout_dynamically_delete_field (uni_form.tests.tests.TestFormLayout) ... ok
+test_double_rendered_field (uni_form.tests.tests.TestFormLayout) ... ok
+test_formset_layout (uni_form.tests.tests.TestFormLayout) ... ok
+test_i18n (uni_form.tests.tests.TestFormLayout) ... ok
+test_layout_fieldset_row_html_with_unicode_fieldnames (uni_form.tests.tests.TestFormLayout) ... ok
+test_layout_invalid_unicode_characters (uni_form.tests.tests.TestFormLayout) ... ok
+test_layout_unresolved_field (uni_form.tests.tests.TestFormLayout) ... ok
+test_layout_within_layout (uni_form.tests.tests.TestFormLayout) ... ok
+test_second_layout_multifield_column_buttonholder_submit_div (uni_form.tests.tests.TestFormLayout) ... ok
+test_clear (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_custom_expiry_datetime (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_custom_expiry_reset (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_custom_expiry_seconds (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_custom_expiry_timedelta (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_cycle (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_decode (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_decode_django12 (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_default_expiry (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_delete (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_flush (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_get_empty (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_get_expire_at_browser_close (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_has_key (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_invalid_key (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_iteritems (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_iterkeys (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_itervalues (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_new_session (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_pop (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_pop_default (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_save (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_setdefault (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_store (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_update (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_values (django.contrib.sessions.tests.CacheSessionTests) ... ok
+test_clear (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_configuration_check (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_custom_expiry_datetime (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_custom_expiry_reset (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_custom_expiry_seconds (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_custom_expiry_timedelta (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_cycle (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_decode (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_decode_django12 (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_default_expiry (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_delete (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_flush (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_get_empty (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_get_expire_at_browser_close (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_has_key (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_invalid_key (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_invalid_key_backslash (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_invalid_key_forwardslash (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_iteritems (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_iterkeys (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_itervalues (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_new_session (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_pop (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_pop_default (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_save (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_setdefault (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_store (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_update (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_values (django.contrib.sessions.tests.FileSessionTests) ... ok
+test_httponly_session_cookie (django.contrib.sessions.tests.SessionMiddlewareTests) ... ok
+test_secure_session_cookie (django.contrib.sessions.tests.SessionMiddlewareTests) ... ok
+test_response_without_messages (django.contrib.messages.tests.middleware.MiddlewareTest) ... ok
+testCharFieldCreate (django_extensions.tests.encrypted_fields.EncryptedFieldsTestCase) ... ok
+testCharFieldRead (django_extensions.tests.encrypted_fields.EncryptedFieldsTestCase) ... ok
+testTextFieldCreate (django_extensions.tests.encrypted_fields.EncryptedFieldsTestCase) ... ok
+testTextFieldRead (django_extensions.tests.encrypted_fields.EncryptedFieldsTestCase) ... ok
+UTILS_TRUNCATE_LETTERS_TESTS (django_extensions.tests.__test__)
+Doctest: django_extensions.tests.__test__.UTILS_TRUNCATE_LETTERS_TESTS ... ok
+UTILS_UUID_TESTS (django_extensions.tests.__test__)
+Doctest: django_extensions.tests.__test__.UTILS_UUID_TESTS ... ok
+
+----------------------------------------------------------------------
+Ran 363 tests in 16.791s
+
+OK
+Creating test database for alias 'default' ('test_pss')...
+Creating tables ...
+Creating table main_participant
+Creating table main_researcher
+Creating table main_building
+Creating table main_room
+Creating table main_qualification
+Creating table main_experiment_qualifications
+Creating table main_experiment_researchers
+Creating table main_experiment
+Creating table main_experimentdate
+Creating table main_experimentdatetimerange
+Creating table main_slot
+Creating table main_appointment
+Creating table auth_permission
+Creating table auth_group_permissions
+Creating table auth_group
+Creating table auth_user_user_permissions
+Creating table auth_user_groups
+Creating table auth_user
+Creating table auth_message
+Creating table django_content_type
+Creating table django_session
+Creating table django_site
+Creating table django_admin_log
+Creating table registration_registrationprofile
+Installing custom SQL ...
+Installing indexes ...
+No fixtures found.
+Destroying test database for alias 'default' ('test_pss')...
